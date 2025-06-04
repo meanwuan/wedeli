@@ -1,0 +1,559 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aqua.Newtonsoft.Json</name>
+    </assembly>
+    <members>
+        <member name="M:Aqua.Newtonsoft.Json.JsonNetSerializerSettingsExtensions.ConfigureAqua``1(``0,Aqua.Newtonsoft.Json.KnownTypesRegistry)">
+            <summary>
+            Sets the <see cref="T:Aqua.Newtonsoft.Json.ContractResolvers.AquaContractResolver"/> in <see cref="T:Newtonsoft.Json.JsonSerializerSettings"/>,
+            decorating a previousely set <see cref="T:Newtonsoft.Json.Serialization.IContractResolver"/> if required.
+            </summary>
+        </member>
+        <member name="M:Aqua.Newtonsoft.Json.JsonNetSerializerSettingsExtensions.CreateAquaConfiguration(Newtonsoft.Json.JsonSerializerSettings,Aqua.Newtonsoft.Json.KnownTypesRegistry)">
+            <summary>
+            Creates a new instance of <see cref="T:Aqua.Newtonsoft.Json.AquaJsonSerializerSettings"/> class, based on the <see cref="T:Newtonsoft.Json.JsonSerializerSettings"/> specified.
+            </summary>
+        </member>
+        <member name="T:Aqua.Newtonsoft.Json.KnownTypesRegistry">
+            <summary>
+            When serializing type information for known types, the type key is written to json as a substitution of the former.
+            </summary>
+        </member>
+        <member name="M:Aqua.Newtonsoft.Json.KnownTypesRegistry.TryRegister``1(System.String)">
+            <summary>
+            Register specified <see cref="T:System.Type"/> as known type, unless <typeparamref name="T"/> or <paramref name="typeKey"/> have already been registered.
+            </summary>
+            <returns><see langword="true"/> is type was successfully registered,
+            <see langword="false"/> if either <typeparamref name="T"/> or <paramref name="typeKey"/> are already registered.</returns>
+        </member>
+        <member name="M:Aqua.Newtonsoft.Json.KnownTypesRegistry.TryRegister(System.Type,System.String)">
+            <summary>
+            Register specified <see cref="T:System.Type"/> as known type, unless <paramref name="type"/> or <paramref name="typeKey"/> have already been registered.
+            </summary>
+            <returns><see langword="true"/> is type was successfully registered,
+            <see langword="false"/> if either <paramref name="type"/> or <paramref name="typeKey"/> are already registered.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNull``1(System.Nullable{``0},System.String)">
+            <summary>
+              Throws an <see cref="T:System.ArgumentNullException"/> if <paramref name="value"/> is <see langword="null"/>,
+              otherwise the <paramref name="value"/> is returned.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/>.</exception>
+            <returns>The <paramref name="value"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNull``1(``0,System.String)">
+            <summary>
+              Throws an <see cref="T:System.ArgumentNullException"/> if <paramref name="value"/> is <see langword="null"/>,
+              otherwise the <paramref name="value"/> is returned.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/>.</exception>
+            <returns>The <paramref name="value"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.AssertNotNull``1(System.Nullable{``0},System.String)">
+            <summary>
+              Throws an <see cref="T:System.ArgumentNullException"/> if <paramref name="value"/> is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:_Check.AssertNotNull``1(``0,System.String)">
+            <summary>
+              Throws an <see cref="T:System.ArgumentNullException"/> if <paramref name="value"/> is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="value"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:_Check.CheckNotNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+            <returns>The <paramref name="items"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNullOrEmpty``1(System.Collections.Generic.IReadOnlyCollection{``0},System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+            <returns>The <paramref name="items"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNullOrEmpty``1(System.Collections.Generic.IReadOnlyList{``0},System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+            <returns>The <paramref name="items"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNullOrEmpty``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+            <returns>The <paramref name="items"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNullOrEmpty``1(System.Collections.Generic.IReadOnlySet{``0},System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+            <returns>The <paramref name="items"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNullOrEmpty(System.String,System.String)">
+            <summary>
+              Throws if <paramref name="value"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+            <returns>The <paramref name="items"/> unless it's <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckNotNullOrWhiteSpace(System.String,System.String)">
+            <summary>
+              Throws if <paramref name="value"/> is either <see langword="null"/> or white space.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="value"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="value"/> is white space.</exception>
+            <returns>The <paramref name="value"/> unless it's <see langword="null"/> or white space.</returns>
+        </member>
+        <member name="M:_Check.AssertNotNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="items"/> is empty.</exception>
+        </member>
+        <member name="M:_Check.AssertNotNullOrWhiteSpace(System.String,System.String)">
+            <summary>
+              Throws if <paramref name="items"/> is either <see langword="null"/> or white space.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="value"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="value"/> is white space.</exception>
+        </member>
+        <member name="M:_Check.CheckItemsNotNull``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/>.</exception>
+            <returns>The <paramref name="items"/> unless it or any element contained is <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckItemsNotNull``1(System.Collections.Generic.IReadOnlyCollection{``0},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/>.</exception>
+            <returns>The <paramref name="items"/> unless it or any element contained is <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckItemsNotNull``1(System.Collections.Generic.IReadOnlyList{``0},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/>.</exception>
+            <returns>The <paramref name="items"/> unless it or any element contained is <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.CheckItemsNotNull``1(System.Collections.Generic.IReadOnlySet{``0},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/>.</exception>
+            <returns>The <paramref name="items"/> unless it or any element contained is <see langword="null"/>.</returns>
+        </member>
+        <member name="M:_Check.AssertItemsNotNull``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:_Check.AssertItemsNotNullOrEmpty(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/> or empty.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/> or empty.</exception>
+        </member>
+        <member name="M:_Check.AssertItemsNotNullOrWhiteSpace(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+              Throws if either <paramref name="items"/> or any element contained is <see langword="null"/> or white space.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="items"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">If any element in <paramref name="items"/> is <see langword="null"/> or white space.</exception>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute">
+            <summary>
+            Indicates that an API is experimental and it may change in the future.
+            </summary>
+            <remarks>
+            This attribute allows call sites to be flagged with a diagnostic that indicates that an experimental
+            feature is used. Authors can use this attribute to ship preview features in their assemblies.
+            </remarks>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.ExperimentalAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute"/> class,
+            specifying the ID that the compiler will use when reporting a use of the API the attribute applies to.
+            </summary>
+            <param name="diagnosticId">The ID that the compiler will use when reporting a use of the API the attribute applies to.</param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.ExperimentalAttribute.DiagnosticId">
+            <summary>
+            Gets the ID that the compiler will use when reporting a use of the API the attribute applies to.
+            </summary>
+            <value>The unique diagnostic ID.</value>
+            <remarks>
+            The diagnostic ID is shown in build output for warnings and errors.
+            <para>This property represents the unique ID that can be used to suppress the warnings or errors, if needed.</para>
+            </remarks>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.ExperimentalAttribute.UrlFormat">
+            <summary>
+            Gets or sets the URL for corresponding documentation.
+            The API accepts a format string instead of an actual URL, creating a generic URL that includes the diagnostic ID.
+            </summary>
+            <value>The format string that represents a URL to corresponding documentation.</value>
+            <remarks>An example format string is <c>https://contoso.com/obsoletion-warnings/{0}</c>.</remarks>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute">
+            <summary>
+            Specifies that this constructor sets all required members for the current type,
+            and callers do not need to set any required members themselves.
+            </summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute">
+            <summary>
+            Specifies the syntax used in a string.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.#ctor(System.String)">
+            <summary>
+            Initializes the <see cref="T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute"/> with the identifier of the syntax used.
+            </summary>
+            <param name="syntax">The syntax identifier.</param>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.#ctor(System.String,System.Object[])">
+            <summary>Initializes the <see cref="T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute"/> with the identifier of the syntax used.</summary>
+            <param name="syntax">The syntax identifier.</param>
+            <param name="arguments">Optional arguments associated with the specific syntax employed.</param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Syntax">
+            <summary>Gets the identifier of the syntax used.</summary>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Arguments">
+            <summary>Optional arguments associated with the specific syntax employed.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.CompositeFormat">
+            <summary>The syntax identifier for strings containing composite formats for string formatting.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.DateOnlyFormat">
+            <summary>The syntax identifier for strings containing date format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.DateTimeFormat">
+            <summary>The syntax identifier for strings containing date and time format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.EnumFormat">
+            <summary>The syntax identifier for strings containing <see cref="T:System.Enum"/> format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.GuidFormat">
+            <summary>The syntax identifier for strings containing <see cref="T:System.Guid"/> format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Json">
+            <summary>The syntax identifier for strings containing JavaScript Object Notation (JSON).</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.NumericFormat">
+            <summary>The syntax identifier for strings containing numeric format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Regex">
+            <summary>The syntax identifier for strings containing regular expressions.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.TimeOnlyFormat">
+            <summary>The syntax identifier for strings containing time format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.TimeSpanFormat">
+            <summary>The syntax identifier for strings containing <see cref="T:System.TimeSpan"/> format specifiers.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Uri">
+            <summary>The syntax identifier for strings containing URIs.</summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Xml">
+            <summary>The syntax identifier for strings containing XML.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.UnscopedRefAttribute">
+            <summary>
+            Used to indicate a byref escapes and is not scoped.
+            </summary>
+            <remarks>
+            <para>
+            There are several cases where the C# compiler treats a <see langword="ref"/> as implicitly
+            <see langword="scoped"/> - where the compiler does not allow the <see langword="ref"/> to escape the method.
+            </para>
+            <para>
+            For example:
+            <list type="number">
+                <item><see langword="this"/> for <see langword="struct"/> instance methods.</item>
+                <item><see langword="ref"/> parameters that refer to <see langword="ref"/> <see langword="struct"/> types.</item>
+                <item><see langword="out"/> parameters.</item>
+            </list>
+            </para>
+            <para>
+            This attribute is used in those instances where the <see langword="ref"/> should be allowed to escape.
+            </para>
+            <para>
+            Applying this attribute, in any form, has impact on consumers of the applicable API. It is necessary for
+            API authors to understand the lifetime implications of applying this attribute and how it may impact their users.
+            </para>
+            </remarks>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute">
+            <summary>
+            Indicates that the specified method requires the ability to generate new code at runtime,
+            for example through <see cref="N:System.Reflection"/>.
+            </summary>
+            <remarks>
+            This allows tools to understand which methods are unsafe to call when compiling ahead of time.
+            </remarks>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute"/> class
+            with the specified message.
+            </summary>
+            <param name="message">
+            A message that contains information about the usage of dynamic code.
+            </param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute.Message">
+            <summary>
+            Gets a message that contains information about the usage of dynamic code.
+            </summary>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute.Url">
+            <summary>
+            Gets or sets an optional URL that contains more information about the method,
+            why it requires dynamic code, and what options a consumer has to deal with it.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CollectionBuilderAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Initialize the attribute to refer to the <paramref name="methodName"/> method on the <paramref name="builderType"/> type.
+            </summary>
+            <param name="builderType">The type of the builder to use to construct the collection.</param>
+            <param name="methodName">The name of the method on the builder to use to construct the collection.</param>
+            <remarks>
+            <paramref name="methodName"/> must refer to a static method that accepts a single parameter of
+            type <see cref="T:System.ReadOnlySpan`1"/> and returns an instance of the collection being built containing
+            a copy of the data from that span.  In future releases of .NET, additional patterns may be supported.
+            </remarks>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CollectionBuilderAttribute.BuilderType">
+            <summary>
+            Gets the type of the builder to use to construct the collection.
+            </summary>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CollectionBuilderAttribute.MethodName">
+            <summary>
+            Gets the name of the method on the builder to use to construct the collection.
+            </summary>
+            <remarks>
+            This should match the metadata name of the target method.
+            For example, this might be ".ctor" if targeting the type's constructor.
+            </remarks>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute">
+            <summary>
+            Indicates that compiler support for a particular feature is required for the location where this attribute is applied.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute"/> type.
+            </summary>
+            <param name="featureName">The name of the feature to indicate.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.FeatureName">
+            <summary>
+            The name of the compiler feature.
+            </summary>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.IsOptional">
+            <summary>
+            If true, the compiler can choose to allow access to the location where this attribute is applied if it does not understand <see cref="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.FeatureName"/>.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.RefStructs">
+            <summary>
+            The <see cref="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.FeatureName"/> used for the ref structs C# feature.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.RequiredMembers">
+            <summary>
+            The <see cref="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.FeatureName"/> used for the required members C# feature.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.RequiredMemberAttribute">
+            <summary>
+            Specifies that a type has required members or that a member is required.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.RequiresLocationAttribute">
+            <summary>
+            Reserved for use by a compiler for tracking metadata.
+            This attribute should not be used by developers in source code.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.DisableRuntimeMarshallingAttribute">
+             <summary>
+             Disables the built-in runtime managed/unmanaged marshalling subsystem for
+             P/Invokes, Delegate types, and unmanaged function pointer invocations.
+             </summary>
+             <remarks>
+             The built-in marshalling subsystem has some behaviors that cannot be changed due to
+             backward-compatibility requirements. This attribute allows disabling the built-in
+             subsystem and instead uses the following rules for P/Invokes, Delegates,
+             and unmanaged function pointer invocations:
+            
+             - All value types that do not contain reference type fields recursively (<c>unmanaged</c> in C#) are blittable
+             - Value types that recursively have any fields that have <c>[StructLayout(LayoutKind.Auto)]</c> are disallowed from interop.
+             - All reference types are disallowed from usage in interop scenarios.
+             - SetLastError support in P/Invokes is disabled.
+             - varargs support is disabled.
+             - LCIDConversionAttribute support is disabled.
+             </remarks>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.UnsafeAccessorAttribute">
+             <summary>
+             Provides access to an inaccessible member of a specific type.
+             </summary>
+             <remarks>
+             This attribute may be applied to an <code>extern static</code> method.
+             The implementation of the <code>extern static</code> method annotated with
+             this attribute will be provided by the runtime based on the information in
+             the attribute and the signature of the method that the attribute is applied to.
+             The runtime will try to find the matching method or field and forward the call
+             to it. If the matching method or field is not found, the body of the <code>extern</code>
+             method will throw <see cref="T:System.MissingFieldException" /> or <see cref="T:System.MissingMethodException" />.
+             Only the specific type defined will be examined for inaccessible members. The type hierarchy
+             is not walked looking for a match.
+            
+             For <see cref="F:System.Runtime.CompilerServices.UnsafeAccessorKind.Method"/>,
+             <see cref="F:System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod"/>,
+             <see cref="F:System.Runtime.CompilerServices.UnsafeAccessorKind.Field"/>,
+             and <see cref="F:System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField"/>, the type of
+             the first argument of the annotated <code>extern</code> method identifies the owning type.
+             The value of the first argument is treated as <code>this</code> pointer for instance fields and methods.
+             The first argument must be passed as <code>ref</code> for instance fields and methods on structs.
+             The value of the first argument is not used by the implementation for <code>static</code> fields and methods.
+            
+             Return type is considered for the signature match. modreqs and modopts are initially not considered for
+             the signature match. However, if an ambiguity exists ignoring modreqs and modopts, a precise match
+             is attempted. If an ambiguity still exists <see cref="T:System.Reflection.AmbiguousMatchException" /> is thrown.
+            
+             By default, the attributed method's name dictates the name of the method/field. This can cause confusion
+             in some cases since language abstractions, like C# local functions, generate mangled IL names. The
+             solution to this is to use the <code>nameof</code> mechanism and define the <see cref="P:System.Runtime.CompilerServices.UnsafeAccessorAttribute.Name"/> property.
+            
+             <code>
+             public void Method(Class c)
+             {
+                 PrivateMethod(c);
+            
+                 [UnsafeAccessor(UnsafeAccessorKind.Method, Name = nameof(PrivateMethod))]
+                 extern static void PrivateMethod(Class c);
+             }
+             </code>
+             </remarks>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.UnsafeAccessorAttribute.#ctor(System.Runtime.CompilerServices.UnsafeAccessorKind)">
+            <summary>
+            Instantiates an <see cref="T:System.Runtime.CompilerServices.UnsafeAccessorAttribute"/>
+            providing access to a member of kind <see cref="T:System.Runtime.CompilerServices.UnsafeAccessorKind"/>.
+            </summary>
+            <param name="kind">The kind of the target to which access is provided.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.UnsafeAccessorAttribute.Kind">
+            <summary>
+            Gets the kind of member to which access is provided.
+            </summary>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.UnsafeAccessorAttribute.Name">
+            <summary>
+            Gets or sets the name of the member to which access is provided.
+            </summary>
+            <remarks>
+            The name defaults to the annotated method name if not specified.
+            The name must be unset/<code>null</code> for <see cref="F:System.Runtime.CompilerServices.UnsafeAccessorKind.Constructor"/>.
+            </remarks>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.UnsafeAccessorKind">
+            <summary>
+            Specifies the kind of target to which an <see cref="T:System.Runtime.CompilerServices.UnsafeAccessorAttribute" /> is providing access.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.UnsafeAccessorKind.Constructor">
+            <summary>
+            Provide access to a constructor.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.UnsafeAccessorKind.Method">
+            <summary>
+            Provide access to a method.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod">
+            <summary>
+            Provide access to a static method.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.UnsafeAccessorKind.Field">
+            <summary>
+            Provide access to a field.
+            </summary>
+        </member>
+        <member name="F:System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField">
+            <summary>
+            Provide access to a static field.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices2.InlineArrayAttribute">
+            <summary>
+            Indicates that the instance's storage is sequentially replicated "length" times.
+            </summary>
+            <remarks>
+            <para>
+            This attribute can be used to annotate a <see langword="struct"/> type with a single field.
+            The runtime will replicate that field in the actual type layout as many times as is specified.
+            </para>
+            <para>
+            Here's an example of how an inline array type with 8 <see cref="T:System.Single"/> values can be declared:
+            <code lang="csharp">
+            [InlineArray(8)]
+            struct Float8InlineArray
+            {
+                private float _value;
+            }
+            </code>
+            </para>
+            </remarks>
+        </member>
+        <member name="M:System.Runtime.CompilerServices2.InlineArrayAttribute.#ctor(System.Int32)">
+            <summary>Creates a new <see cref="T:System.Runtime.CompilerServices2.InlineArrayAttribute"/> instance with the specified length.</summary>
+            <param name="length">The number of sequential fields to replicate in the inline array type.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices2.InlineArrayAttribute.Length">
+            <summary>Gets the number of sequential fields to replicate in the inline array type.</summary>
+        </member>
+        <member name="T:System.Runtime.Versioning.ObsoletedOSPlatformAttribute">
+            <summary>
+            Marks APIs that were obsoleted in a given operating system version.
+            </summary>
+            <remarks>
+            Primarily used by OS bindings to indicate APIs that should not be used anymore.
+            </remarks>
+        </member>
+    </members>
+</doc>
