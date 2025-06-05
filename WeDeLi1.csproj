@@ -202,7 +202,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\WeDeLiContext.cs" />
     <Compile Include="Dbase\databases.cs" />
     <Compile Include="Dbase\dbase.Context.cs">
       <AutoGen>True</AutoGen>

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeDeLi1.Dbase;
-using WeDeLi1.Services;
+using WeDeLi1.Service;
 
 namespace WeDeLi1
 {

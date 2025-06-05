@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeDeLi1.Dbase;
-    namespace WeDeLi1.Services
+
+    namespace WeDeLi1.Service
     {
         public class RegisterService
         {

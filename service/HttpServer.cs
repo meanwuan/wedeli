@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WeDeLi1.Services;
+using WeDeLi1.Service;
 
 namespace WeDeLi1.service
 {
@@ -15,11 +15,15 @@ namespace WeDeLi1.service
         private readonly LoginService loginService;
         private readonly RegisterService registerService;
         private bool isRunning;
+        private string currentCaptchaText; // Store the current CAPTCHA text for validation
 
         public HttpServer(string prefix)
         {
+            if (string.IsNullOrEmpty(prefix))
+                throw new ArgumentNullException(nameof(prefix), "Prefix cannot be null or empty.");
+
             listener = new HttpListener();
-            listener.Prefixes.Add(prefix); // Ví dụ: "http://localhost:8080/"
+            listener.Prefixes.Add(prefix); // Example: "http://localhost:8080/"
             loginService = new LoginService();
             registerService = new RegisterService();
         }
@@ -43,14 +47,26 @@ namespace WeDeLi1.service
             catch (Exception ex)
             {
                 Console.WriteLine($"Server error: {ex.Message}");
+                throw;
             }
         }
 
         public void Stop()
         {
+            if (!isRunning) return;
+
             isRunning = false;
             listener.Stop();
             listener.Close();
+            Console.WriteLine("Server stopped.");
+        }
+
+        private string GenerateCaptcha(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         private void ProcessRequest(HttpListenerContext context)
@@ -60,15 +76,31 @@ namespace WeDeLi1.service
                 var request = context.Request;
                 var response = context.Response;
 
-                // Đọc body của request
-                string requestBody;
-                using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                // Add CORS headers to allow requests from the Flutter web app
+                response.AddHeader("Access-Control-Allow-Origin", "*");
+                response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+                response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
+
+                // Handle preflight OPTIONS request for CORS
+                if (request.HttpMethod == "OPTIONS")
                 {
-                    requestBody = reader.ReadToEnd();
+                    response.StatusCode = (int)HttpStatusCode.OK;
+                    response.Close();
+                    return;
                 }
 
-                // Xử lý endpoint
-                string responseString = "";
+                // Read request body
+                string requestBody = string.Empty;
+                if (request.HasEntityBody)
+                {
+                    using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                    {
+                        requestBody = reader.ReadToEnd();
+                    }
+                }
+
+                // Process endpoint
+                string responseString;
                 if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/login")
                 {
                     var loginRequest = JsonSerializer.Deserialize<LoginRequest>(requestBody);
@@ -93,29 +125,49 @@ namespace WeDeLi1.service
                         registerRequest.VaiTro);
                     responseString = JsonSerializer.Serialize(result);
                 }
+                else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/captcha")
+                {
+                    // Generate a new CAPTCHA text and store it
+                    currentCaptchaText = GenerateCaptcha(6); // Generate a 6-character CAPTCHA
+                    responseString = JsonSerializer.Serialize(new { CaptchaText = currentCaptchaText });
+                }
                 else
                 {
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     responseString = JsonSerializer.Serialize(new { Message = "Endpoint không tồn tại" });
                 }
 
-                // Gửi response
+                // Send response
                 byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-                response.ContentType = "application/json";
+                response.ContentType = "application/json; charset=utf-8";
                 response.ContentLength64 = buffer.Length;
                 response.OutputStream.Write(buffer, 0, buffer.Length);
                 response.OutputStream.Close();
             }
+            catch (JsonException ex)
+            {
+                SendErrorResponse(context, HttpStatusCode.BadRequest, $"Invalid JSON format: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                var responseString = JsonSerializer.Serialize(new { Message = $"Lỗi server: {ex.Message}" });
-                byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-                context.Response.ContentType = "application/json";
-                context.Response.ContentLength64 = buffer.Length;
-                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                context.Response.OutputStream.Close();
+                SendErrorResponse(context, HttpStatusCode.InternalServerError, $"Lỗi server: {ex.Message}");
             }
+        }
+
+        private void SendErrorResponse(HttpListenerContext context, HttpStatusCode statusCode, string message)
+        {
+            var response = context.Response;
+            response.StatusCode = (int)statusCode;
+            response.AddHeader("Access-Control-Allow-Origin", "*");
+            response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+            response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
+
+            var responseString = JsonSerializer.Serialize(new { Message = message });
+            byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+            response.ContentType = "application/json; charset=utf-8";
+            response.ContentLength64 = buffer.Length;
+            response.OutputStream.Write(buffer, 0, buffer.Length);
+            response.OutputStream.Close();
         }
 
         private class LoginRequest
