@@ -16,16 +16,16 @@ namespace WeDeLi1
         static void Main()
         {
             // Khởi tạo và chạy HttpServer trong một Task riêng
-            // Đảm bảo địa chỉ IP và cổng trùng khớp với cấu hình của bạn
-            string serverPreface = "http://*:8080/"; // Hoặc "http://localhost:8080/"
+            string serverPreface = "http://*:8080/";
             HttpServer server = new HttpServer(serverPreface);
-
-            // Chạy server trong một background task
-            Task.Run(() => server.StartAsync());
+            Task.Run(() => server.StartAsync()); // Chạy server trong background
 
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new login());
+            Application.SetCompatibleTextRenderingDefault(false);   
+
+            // Sử dụng ApplicationContext để quản lý vòng đời ứng dụng
+            // Ứng dụng sẽ chạy cho đến khi Form chính (hoặc tất cả các form khác) bị đóng
+            Application.Run(new ApplicationContext(new login())); // Bắt đầu với form login
         }
     }
 }

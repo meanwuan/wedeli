@@ -14,8 +14,9 @@ namespace WeDeLi1.service
         private readonly HttpListener listener;
         private readonly LoginService loginService;
         private readonly RegisterService registerService;
+        private readonly TransportMapService transportMapService;
         private bool isRunning;
-        private string currentCaptchaText; // Store the current CAPTCHA text for validation
+        private string currentCaptchaText;
 
         public HttpServer(string prefix)
         {
@@ -23,9 +24,10 @@ namespace WeDeLi1.service
                 throw new ArgumentNullException(nameof(prefix), "Prefix cannot be null or empty.");
 
             listener = new HttpListener();
-            listener.Prefixes.Add(prefix); // Example: "http://localhost:8080/"
+            listener.Prefixes.Add(prefix);
             loginService = new LoginService();
             registerService = new RegisterService();
+            transportMapService = new TransportMapService();
         }
 
         public async Task StartAsync()
@@ -69,19 +71,17 @@ namespace WeDeLi1.service
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private void ProcessRequest(HttpListenerContext context)
+        private async void ProcessRequest(HttpListenerContext context)
         {
             try
             {
                 var request = context.Request;
                 var response = context.Response;
 
-                // Add CORS headers to allow requests from the Flutter web app
                 response.AddHeader("Access-Control-Allow-Origin", "*");
                 response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
                 response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
 
-                // Handle preflight OPTIONS request for CORS
                 if (request.HttpMethod == "OPTIONS")
                 {
                     response.StatusCode = (int)HttpStatusCode.OK;
@@ -89,7 +89,6 @@ namespace WeDeLi1.service
                     return;
                 }
 
-                // Read request body
                 string requestBody = string.Empty;
                 if (request.HasEntityBody)
                 {
@@ -99,7 +98,6 @@ namespace WeDeLi1.service
                     }
                 }
 
-                // Process endpoint
                 string responseString;
                 if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/login")
                 {
@@ -127,9 +125,26 @@ namespace WeDeLi1.service
                 }
                 else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/captcha")
                 {
-                    // Generate a new CAPTCHA text and store it
-                    currentCaptchaText = GenerateCaptcha(6); // Generate a 6-character CAPTCHA
+                    currentCaptchaText = GenerateCaptcha(6);
                     responseString = JsonSerializer.Serialize(new { CaptchaText = currentCaptchaText });
+                }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/userlocation")
+                {
+                    var userLocationRequest = JsonSerializer.Deserialize<UserLocationRequest>(requestBody);
+                    var result = await transportMapService.GetUserLocation(userLocationRequest.UserId);
+                    responseString = JsonSerializer.Serialize(result);
+                }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/coordinates")
+                {
+                    var coordinatesRequest = JsonSerializer.Deserialize<CoordinatesRequest>(requestBody);
+                    var result = await transportMapService.GetCoordinatesFromUserAddress(coordinatesRequest.Address);
+                    responseString = JsonSerializer.Serialize(result);
+                }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/nearbybusstations")
+                {
+                    var nearbyBusStationsRequest = JsonSerializer.Deserialize<NearbyBusStationsRequest>(requestBody);
+                    var result = await transportMapService.GetNearbyBusStations(nearbyBusStationsRequest.UserId, nearbyBusStationsRequest.RadiusKm);
+                    responseString = JsonSerializer.Serialize(result);
                 }
                 else
                 {
@@ -137,7 +152,6 @@ namespace WeDeLi1.service
                     responseString = JsonSerializer.Serialize(new { Message = "Endpoint không tồn tại" });
                 }
 
-                // Send response
                 byte[] buffer = Encoding.UTF8.GetBytes(responseString);
                 response.ContentType = "application/json; charset=utf-8";
                 response.ContentLength64 = buffer.Length;
@@ -188,6 +202,34 @@ namespace WeDeLi1.service
             public DateTimeOffset? NgaySinh { get; set; }
             public string DiaChi { get; set; }
             public string VaiTro { get; set; }
+        }
+
+        private class UserRequest
+        {
+            public string HoTen { get; set; }
+            public string TenDangNhap { get; set; }
+            public string MatKhau { get; set; }
+            public string Email { get; set; }
+            public string SoDienThoai { get; set; }
+            public DateTimeOffset? NgaySinh { get; set; }
+            public string DiaChi { get; set; }
+            public string VaiTro { get; set; }
+        }
+
+        private class UserLocationRequest
+        {
+            public string UserId { get; set; }
+        }
+
+        private class CoordinatesRequest
+        {
+            public string Address { get; set; }
+        }
+
+        private class NearbyBusStationsRequest
+        {
+            public string UserId { get; set; }
+            public double RadiusKm { get; set; }
         }
     }
 }

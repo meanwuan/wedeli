@@ -109,8 +109,8 @@ namespace WeDeLi1
 
         private void register_Click(object sender, EventArgs e)
         {
-            this.Close(); // chỉ Close là đủ
-            var loginForm = new login();
+            this.Hide(); // chỉ Close là đủ
+            var loginForm = new register();
             loginForm.Show();
         }
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeDeLi1.Dbase;
 using WeDeLi1.service;
+using WeDeLi1.style;
 
 namespace WeDeLi1
 {
@@ -20,6 +21,8 @@ namespace WeDeLi1
         public addproduct(string maNguoiDung = null, DonHang donHang = null)
         {
             InitializeComponent();
+            borderbutton.bogocbovien(turnback, 12);
+            borderbutton.bogocbovien(conf, 12);
             this.donHang = donHang;
             if (maNguoiDung != null) sessionManager = maNguoiDung; // Gán mã người dùng nếu có
             //LoadNhaXeComboBox();

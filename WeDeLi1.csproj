@@ -202,6 +202,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="conf_pro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="conf_pro.Designer.cs">
+      <DependentUpon>conf_pro.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dbase\databases.cs" />
     <Compile Include="Dbase\dbase.Context.cs">
       <AutoGen>True</AutoGen>
@@ -232,6 +238,48 @@
     <Compile Include="Dbase\PhuongTien.cs" />
     <Compile Include="Dbase\sessionmanager.cs" />
     <Compile Include="Dbase\ThanhToanDonHang.cs" />
+    <Compile Include="formtransfer\addproduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\addproduct.Designer.cs">
+      <DependentUpon>addproduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\addxe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\addxe.Designer.cs">
+      <DependentUpon>addxe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\changeform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\changeform.Designer.cs">
+      <DependentUpon>changeform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\changenhanvien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\changenhanvien.Designer.cs">
+      <DependentUpon>changenhanvien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\changexe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\changexe.Designer.cs">
+      <DependentUpon>changexe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\listnhanvien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\listnhanvien.Designer.cs">
+      <DependentUpon>listnhanvien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\listxe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\listxe.Designer.cs">
+      <DependentUpon>listxe.cs</DependentUpon>
+    </Compile>
     <Compile Include="formtransfer\maintransfer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +311,12 @@
     <Compile Include="formuser\historypro.Designer.cs">
       <DependentUpon>historypro.cs</DependentUpon>
     </Compile>
+    <Compile Include="formuser\inform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formuser\inform.Designer.cs">
+      <DependentUpon>inform.cs</DependentUpon>
+    </Compile>
     <Compile Include="login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -278,6 +332,7 @@
       <DependentUpon>register.cs</DependentUpon>
     </Compile>
     <Compile Include="service\addorders.cs" />
+    <Compile Include="service\TransportMapService.cs" />
     <Compile Include="service\HttpServer.cs" />
     <Compile Include="service\RegisterService.cs" />
     <Compile Include="service\LoginService.cs" />
@@ -294,6 +349,32 @@
     <Compile Include="formuser\userform.Designer.cs">
       <DependentUpon>userform.cs</DependentUpon>
     </Compile>
+    <Compile Include="style\borderbutton.cs" />
+    <Compile Include="style\imageborder.cs" />
+    <EmbeddedResource Include="conf_pro.resx">
+      <DependentUpon>conf_pro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\addproduct.resx">
+      <DependentUpon>addproduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\addxe.resx">
+      <DependentUpon>addxe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\changeform.resx">
+      <DependentUpon>changeform.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\changenhanvien.resx">
+      <DependentUpon>changenhanvien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\changexe.resx">
+      <DependentUpon>changexe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\listnhanvien.resx">
+      <DependentUpon>listnhanvien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\listxe.resx">
+      <DependentUpon>listxe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="formtransfer\maintransfer.resx">
       <DependentUpon>maintransfer.cs</DependentUpon>
     </EmbeddedResource>
@@ -308,6 +389,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="formuser\historypro.resx">
       <DependentUpon>historypro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formuser\inform.resx">
+      <DependentUpon>inform.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.cs</DependentUpon>
