@@ -28,6 +28,9 @@ namespace WeDeLi1.Dbase
         public string TenChu { get; set; }
 
         [Required]
+        public int sotien { get; set; }
+
+        [Required]
         [StringLength(50)]
         public string TenDangNhap { get; set; }
 

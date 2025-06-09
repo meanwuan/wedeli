@@ -39,9 +39,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(46, 32);
+            this.label1.Location = new System.Drawing.Point(66, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(408, 36);
+            this.label1.Size = new System.Drawing.Size(327, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Tình Trạng đơn hàng của bạn";
             // 
@@ -49,9 +49,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Calibri", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 83);
+            this.label2.Location = new System.Drawing.Point(43, 87);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(450, 58);
+            this.label2.Size = new System.Drawing.Size(350, 45);
             this.label2.TabIndex = 1;
             this.label2.Text = "Chờ Nhà Xe Xác Nhận";
             // 

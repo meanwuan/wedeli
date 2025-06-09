@@ -208,26 +208,13 @@
     <Compile Include="conf_pro.Designer.cs">
       <DependentUpon>conf_pro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dbase\DataSe.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSe.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dbase\databases.cs" />
-    <Compile Include="Dbase\dbase.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbase.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Dbase\dbase.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbase.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Dbase\dbase.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbase.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Dbase\DonHang.cs" />
-    <Compile Include="Dbase\DonHangChoXacNhan.cs">
-      <DependentUpon>dbase.tt</DependentUpon>
-    </Compile>
     <Compile Include="Dbase\GiaoHang.cs" />
     <Compile Include="Dbase\GiayTo.cs" />
     <Compile Include="Dbase\Luong.cs" />
@@ -332,6 +319,8 @@
       <DependentUpon>register.cs</DependentUpon>
     </Compile>
     <Compile Include="service\addorders.cs" />
+    <Compile Include="service\OrderStatusService.cs" />
+    <Compile Include="service\UserServices.cs" />
     <Compile Include="service\TransportMapService.cs" />
     <Compile Include="service\HttpServer.cs" />
     <Compile Include="service\RegisterService.cs" />
@@ -414,12 +403,16 @@
     <EmbeddedResource Include="formuser\userform.resx">
       <DependentUpon>userform.cs</DependentUpon>
     </EmbeddedResource>
-    <EntityDeploy Include="Dbase\dbase.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>dbase.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Dbase\dbase.edmx.diagram">
-      <DependentUpon>dbase.edmx</DependentUpon>
+    <None Include="Dbase\DataSe.xsc">
+      <DependentUpon>DataSe.xsd</DependentUpon>
+    </None>
+    <None Include="Dbase\DataSe.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSe.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Dbase\DataSe.xss">
+      <DependentUpon>DataSe.xsd</DependentUpon>
     </None>
     <None Include="libmongocrypt.dylib" />
     <None Include="libmongocrypt.so" />
@@ -439,16 +432,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChatGPT-Image-May-9_-2025_-09_50_36-PM.ico" />
-    <Content Include="Dbase\dbase.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>dbase.edmx</DependentUpon>
-      <LastGenOutput>dbase.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Dbase\dbase.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>dbase.edmx</DependentUpon>
-      <LastGenOutput>dbase.cs</LastGenOutput>
-    </Content>
     <Content Include="mongocrypt.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -14,35 +14,42 @@ namespace WeDeLi1
 {
     public partial class tinhtrangdonhang : Form
     {
-        private readonly addorders addOrderService = new addorders();
-        private readonly string sessionManager = sessionmanager.curentUser; // Assuming sessionmanager is a class that manages user sessions
-        private readonly string maDonHang; // Assuming maDonHang is a string that represents the order ID
-        private readonly XacNhanDonhang xacNhanDonhangService = new XacNhanDonhang(); // Assuming XacNhanDonhang is a class that handles order confirmation
-        private readonly conf_addpro confAddProService = new conf_addpro(); // Assuming conf_addpro is a class that handles order confirmation logic 
-        public tinhtrangdonhang()
+        private readonly OrderStatusService orderStatusService;
+        private readonly string sessionManager = sessionmanager.curentUser;
+        private readonly string maDonHang;
+
+        public tinhtrangdonhang(string maDonHang)
         {
             InitializeComponent();
+            this.maDonHang = maDonHang;
+            orderStatusService = new OrderStatusService();
+            LoadOrderStatus();
+        }
+
+        private void LoadOrderStatus()
+        {
+            try
+            {
+                var orderStatus = orderStatusService.GetOrderStatus(maDonHang);
+                label2.Text = $"Trạng thái: {orderStatus.TrangThai}"; // Assuming statusLabel is a Label control
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void changepr_Click(object sender, EventArgs e)
         {
             try
             {
-                var orders = addOrderService.Getdonhangformlog();
-                var donHang = orders.Find(o => o.MaDonHang == maDonHang);
-                if (donHang != null)
-                {
-                    var addProductForm = new addproduct(sessionManager, donHang);
-                    addProductForm.ShowDialog(); // Hiển thị form để chỉnh sửa
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy đơn hàng để sửa!");
-                }
+                var donHang = orderStatusService.GetOrderForEdit(maDonHang);
+                var addProductForm = new addproduct(sessionManager, donHang);
+                addProductForm.ShowDialog();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi sửa đơn hàng: " + ex.Message);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -50,14 +57,23 @@ namespace WeDeLi1
         {
             try
             {
-                confAddProService.XacNhanDonHang(maDonHang, "TuChoi");
-                MessageBox.Show("Đơn hàng đã bị hủy thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                if (MessageBox.Show("Bạn có chắc muốn hủy đơn hàng này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    bool success = orderStatusService.CancelOrder(maDonHang);
+                    if (success)
+                    {
+                        MessageBox.Show("Đơn hàng đã được hủy thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không tìm thấy đơn hàng để hủy.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show("Lỗi khi hủy đơn hàng: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

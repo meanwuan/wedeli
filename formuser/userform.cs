@@ -249,5 +249,11 @@ namespace WeDeLi1
         {
             throw new NotImplementedException();
         }
+
+        private void edit_info_Click(object sender, EventArgs e)
+        {
+            var infoForm = new infor();
+            infoForm.Show();
+        }
     }
 }

@@ -46,7 +46,7 @@
             this.webView21.CreationProperties = null;
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webView21.Location = new System.Drawing.Point(24, 64);
-            this.webView21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.webView21.Margin = new System.Windows.Forms.Padding(2);
             this.webView21.Name = "webView21";
             this.webView21.Size = new System.Drawing.Size(951, 357);
             this.webView21.TabIndex = 0;
@@ -57,7 +57,7 @@
             // 
             this.signout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.signout.Location = new System.Drawing.Point(783, 17);
-            this.signout.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.signout.Margin = new System.Windows.Forms.Padding(2);
             this.signout.Name = "signout";
             this.signout.Size = new System.Drawing.Size(80, 34);
             this.signout.TabIndex = 5;
@@ -68,7 +68,7 @@
             // 
             this.add_goods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.add_goods.Location = new System.Drawing.Point(105, 17);
-            this.add_goods.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.add_goods.Margin = new System.Windows.Forms.Padding(2);
             this.add_goods.Name = "add_goods";
             this.add_goods.Size = new System.Drawing.Size(92, 34);
             this.add_goods.TabIndex = 6;
@@ -80,7 +80,7 @@
             // 
             this.history_diliver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.history_diliver.Location = new System.Drawing.Point(298, 17);
-            this.history_diliver.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.history_diliver.Margin = new System.Windows.Forms.Padding(2);
             this.history_diliver.Name = "history_diliver";
             this.history_diliver.Size = new System.Drawing.Size(106, 34);
             this.history_diliver.TabIndex = 7;
@@ -92,18 +92,19 @@
             // 
             this.edit_info.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.edit_info.Location = new System.Drawing.Point(561, 17);
-            this.edit_info.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.edit_info.Margin = new System.Windows.Forms.Padding(2);
             this.edit_info.Name = "edit_info";
             this.edit_info.Size = new System.Drawing.Size(105, 34);
             this.edit_info.TabIndex = 9;
             this.edit_info.Text = "Chỉnh Sửa Thông Tin";
             this.edit_info.UseVisualStyleBackColor = false;
+            this.edit_info.Click += new System.EventHandler(this.edit_info_Click);
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(24, 430);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
@@ -126,7 +127,7 @@
             this.Controls.Add(this.add_goods);
             this.Controls.Add(this.signout);
             this.Controls.Add(this.webView21);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "userform";
             this.Text = "userform";
             this.Load += new System.EventHandler(this.userform_Load);

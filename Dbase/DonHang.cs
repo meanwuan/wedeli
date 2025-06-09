@@ -39,6 +39,14 @@ namespace WeDeLi1.Dbase
         [StringLength(20)]
         public string MaPhuongTien { get; set; }
 
+        [StringLength(20)]
+        public string MaNhaXe { get; set; }
+
+        public double? TongTien { get; set; }
+
+        [StringLength(50)]
+        public string PhuongThucThanhToan { get; set; }
+
         public virtual NguoiDung NguoiDung { get; set; }
 
         public virtual PhuongTien PhuongTien { get; set; }

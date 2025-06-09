@@ -21,7 +21,6 @@ namespace WeDeLi1.Service
             _geocodeCache = new Dictionary<string, (double? lat, double? lng)>();
         }
 
-        // Chuyển đổi địa chỉ thành tọa độ
         private async Task<(double? lat, double? lng)> GeocodeAddress(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
@@ -62,19 +61,18 @@ namespace WeDeLi1.Service
                 {
                     if (retry == maxRetries - 1)
                     {
-                        return (null, null); // Trả về null thay vì ném lỗi
+                        return (null, null);
                     }
                     await Task.Delay(2000);
                 }
                 catch (Exception)
                 {
-                    return (null, null); // Trả về null nếu có lỗi khác
+                    return (null, null);
                 }
             }
             return (null, null);
         }
 
-        // Lấy tọa độ từ địa chỉ của người dùng theo userId
         public async Task<object> GetUserLocation(string userId)
         {
             if (string.IsNullOrEmpty(userId))
@@ -86,7 +84,6 @@ namespace WeDeLi1.Service
             {
                 using (var context = new databases())
                 {
-                    // Sử dụng FirstOrDefault thay vì FirstOrDefaultAsync vì EF6
                     string userAddress = context.NguoiDungs
                         .Where(u => u.MaNguoiDung == userId)
                         .Select(u => u.DiaChi)
@@ -122,7 +119,6 @@ namespace WeDeLi1.Service
             }
         }
 
-        // Lấy tọa độ từ địa chỉ bất kỳ
         public async Task<object> GetCoordinatesFromUserAddress(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
@@ -156,7 +152,6 @@ namespace WeDeLi1.Service
             }
         }
 
-        // Lấy danh sách nhà xe gần đó
         public async Task<object> GetNearbyBusStations(string userId, double radiusKm)
         {
             if (string.IsNullOrEmpty(userId))
@@ -168,7 +163,6 @@ namespace WeDeLi1.Service
             {
                 using (var context = new databases())
                 {
-                    // Lấy địa chỉ và tọa độ người dùng
                     string userAddress = context.NguoiDungs
                         .Where(u => u.MaNguoiDung == userId)
                         .Select(u => u.DiaChi)
@@ -185,7 +179,6 @@ namespace WeDeLi1.Service
                         return new { Success = false, Message = $"Unable to convert user address to coordinates: {userAddress}" };
                     }
 
-                    // Lấy danh sách nhà xe
                     var busStations = context.NhaXes
                         .Select(nx => new { nx.MaNhaXe, nx.TenChu, nx.DiaChi })
                         .ToList();
@@ -197,7 +190,7 @@ namespace WeDeLi1.Service
                         {
                             var coords = await GeocodeAddress(station.DiaChi);
                             busStationsWithCoords.Add((station.MaNhaXe, station.TenChu, station.DiaChi, coords.lat, coords.lng));
-                            await Task.Delay(1000); // Đợi để tránh vượt giới hạn Nominatim
+                            await Task.Delay(1000);
                         }
                         catch
                         {
@@ -205,10 +198,8 @@ namespace WeDeLi1.Service
                         }
                     }
 
-                    // Lọc nhà xe trong bán kính
                     var nearbyStations = await FilterBusStationsWithinRadius(userCoords.lat.Value, userCoords.lng.Value, busStationsWithCoords, radiusKm);
 
-                    // Tính khoảng cách thực tế
                     var result = new List<object>();
                     foreach (var station in nearbyStations)
                     {
@@ -259,7 +250,6 @@ namespace WeDeLi1.Service
             }
         }
 
-        // Lọc nhà xe trong bán kính
         private Task<List<(string MaNhaXe, string TenChu, string DiaChi, double? Lat, double? Lng)>> FilterBusStationsWithinRadius(double userLat, double userLng, List<(string MaNhaXe, string TenChu, string DiaChi, double? Lat, double? Lng)> busStations, double radiusKm)
         {
             var nearbyStations = new List<(string MaNhaXe, string TenChu, string DiaChi, double? Lat, double? Lng)>();
@@ -279,10 +269,9 @@ namespace WeDeLi1.Service
             return Task.FromResult(nearbyStations);
         }
 
-        // Tính khoảng cách Haversine
         private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
         {
-            const double R = 6371; // Bán kính Trái Đất (km)
+            const double R = 6371; // Earth's radius (km)
             var dLat = ToRadian(lat2 - lat1);
             var dLon = ToRadian(lon2 - lon1);
             var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
@@ -297,7 +286,6 @@ namespace WeDeLi1.Service
             return degree * Math.PI / 180;
         }
 
-        // Tính khoảng cách thực tế bằng OSRM
         private async Task<string> GetDistance(string origin, string destination)
         {
             try

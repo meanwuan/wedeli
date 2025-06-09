@@ -14,32 +14,101 @@ namespace WeDeLi1.service
 {
     public class addorders
     {
-        private readonly string logfile  = "don_hang_cho_xacnhan_log.json";
+        private readonly string logfile = "don_hang_cho_xacnhan_log.json";
+        private readonly string pendingLogfile = "don_hang_tam_log.json";
+
         public string themdonhang(DonHang donhang)
         {
             try
             {
-                string prefix = $"{donhang.MaNguoiDung}_{donhang.MaPhuongTien}_{DateTime.Now: ddMMyyyy}";
+                string prefix = $"{donhang.MaNguoiDung}_{donhang.MaPhuongTien}_{DateTime.Now:ddMMyyyy}";
                 List<DonHang> existingorders = Getdonhangformlog();
                 int nextNumber = existingorders.Count(o => o.MaDonHang.StartsWith(prefix)) + 1;
-                donhang.MaDonHang = $"{prefix}_{nextNumber:D4}"; // Format the order number with leading zeros
-                donhang.TrangThai = "Chờ xác nhận"; // Set the initial status of the order
-                                                    // thêm vào file log
+                donhang.MaDonHang = $"{prefix}_{nextNumber:D4}";
+                donhang.TrangThai = "Đã xác nhận";
+
                 existingorders.Add(donhang);
                 File.WriteAllText(logfile, JsonConvert.SerializeObject(existingorders, Formatting.Indented));
+
+                // Add to ThanhToanDonHang
+                using (var context = new databases())
+                {
+                    var thanhToan = new ThanhToanDonHang
+                    {
+                        MaDonHang = donhang.MaDonHang,
+                        MaNhaXe = donhang.MaNhaXe,
+                        TongTien = donhang.TongTien,
+                        Bac = 1 // Default tier
+                    };
+                    context.ThanhToanDonHangs.Add(thanhToan);
+                    context.SaveChanges();
+                }
+
                 return donhang.MaDonHang;
             }
             catch (Exception ex)
             {
-
-                throw new Exception("lỗi khi thêm đơn hàng vào file log " + ex.Message);
+                throw new Exception("Lỗi khi thêm đơn hàng: " + ex.Message);
             }
         }
-        public List<DonHang> Getdonhangformlog() {
+
+        public void AddPendingOrder(XacNhanDonhang pendingOrder, string maNhaXe, double totalCost, string paymentMethod)
+        {
+            try
+            {
+                List<PendingOrder> pendingOrders = GetPendingOrders();
+                // Select a suitable PhuongTien from the chosen NhaXe
+                string maPhuongTien = SelectPhuongTien(maNhaXe, pendingOrder.KhoiLuong ?? 0);
+                if (string.IsNullOrEmpty(maPhuongTien))
+                {
+                    throw new Exception("Không tìm thấy phương tiện phù hợp từ nhà xe được chọn.");
+                }
+
+                var pending = new PendingOrder
+                {
+                    MaDonHangTam = pendingOrder.MaDonHangTam,
+                    LoaiDon = pendingOrder.LoaiDon,
+                    DiaChiLayHang = pendingOrder.DiaChiLayHang,
+                    ThoiGianLayHang = pendingOrder.ThoiGianLayHang,
+                    DiaChiGiaoHang = pendingOrder.DiaChiGiaoHang,
+                    ThoiGianGiaoHang = pendingOrder.ThoiGianGiaoHang,
+                    KhoiLuong = pendingOrder.KhoiLuong,
+                    MaNhaXe = maNhaXe,
+                    MaPhuongTien = maPhuongTien,
+                    TongTien = totalCost,
+                    PhuongThucThanhToan = paymentMethod,
+                    TrangThai = "Chờ xác nhận",
+                    MaNguoiDung = sessionmanager.curentUser
+                };
+
+                pendingOrders.Add(pending);
+                File.WriteAllText(pendingLogfile, JsonConvert.SerializeObject(pendingOrders, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi thêm đơn hàng tạm: " + ex.Message);
+            }
+        }
+
+        private string SelectPhuongTien(string maNhaXe, double khoiLuong)
+        {
+            using (var context = new databases())
+            {
+                var phuongTien = context.PhuongTiens
+                    .Where(pt => pt.MaNhaXe == maNhaXe && pt.TaiTrong >= khoiLuong)
+                    .OrderBy(pt => pt.TaiTrong) // Select vehicle with smallest suitable capacity
+                    .Select(pt => pt.MaPhuongTien)
+                    .FirstOrDefault();
+                return phuongTien;
+            }
+        }
+
+        public List<DonHang> Getdonhangformlog()
+        {
             try
             {
                 if (File.Exists(logfile))
-                { 
+                {
                     string json = File.ReadAllText(logfile);
                     return JsonConvert.DeserializeObject<List<DonHang>>(json) ?? new List<DonHang>();
                 }
@@ -47,9 +116,119 @@ namespace WeDeLi1.service
             }
             catch (Exception)
             {
-
                 return new List<DonHang>();
             }
         }
+
+        public List<PendingOrder> GetPendingOrders()
+        {
+            try
+            {
+                if (File.Exists(pendingLogfile))
+                {
+                    string json = File.ReadAllText(pendingLogfile);
+                    return JsonConvert.DeserializeObject<List<PendingOrder>>(json) ?? new List<PendingOrder>();
+                }
+                return new List<PendingOrder>();
+            }
+            catch (Exception)
+            {
+                return new List<PendingOrder>();
+            }
+        }
+
+        public void ConfirmOrder(string maDonHangTam)
+        {
+            try
+            {
+                var pendingOrders = GetPendingOrders();
+                var pendingOrder = pendingOrders.FirstOrDefault(o => o.MaDonHangTam == maDonHangTam);
+
+                if (pendingOrder == null)
+                {
+                    throw new Exception("Không tìm thấy đơn hàng tạm.");
+                }
+
+                var donHang = new DonHang
+                {
+                    LoaiDon = pendingOrder.LoaiDon,
+                    KhoiLuong = pendingOrder.KhoiLuong,
+                    tenNguoiNhan = pendingOrder.tenNguoiNhan,
+                    DiaChiLayHang = pendingOrder.DiaChiLayHang,
+                    DiaChiGiaoHang = pendingOrder.DiaChiGiaoHang,
+                    ThoiGianLayHang = pendingOrder.ThoiGianLayHang,
+                    ThoiGianGiaoHang = pendingOrder.ThoiGianGiaoHang,
+                    MaNguoiDung = pendingOrder.MaNguoiDung,
+                    MaPhuongTien = pendingOrder.MaPhuongTien,
+                    MaNhaXe = pendingOrder.MaNhaXe,
+                    TongTien = pendingOrder.TongTien,
+                    PhuongThucThanhToan = pendingOrder.PhuongThucThanhToan
+                };
+
+                themdonhang(donHang);
+
+                pendingOrders.Remove(pendingOrder);
+                File.WriteAllText(pendingLogfile, JsonConvert.SerializeObject(pendingOrders, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi xác nhận đơn hàng: " + ex.Message);
+            }
+        }
+
+        public bool CancelOrder(string maDonHang)
+        {
+            try
+            {
+                bool removed = false;
+
+                // Check and remove from pending orders
+                var pendingOrders = GetPendingOrders();
+                var pendingOrder = pendingOrders.FirstOrDefault(o => o.MaDonHangTam == maDonHang);
+                if (pendingOrder != null)
+                {
+                    pendingOrders.Remove(pendingOrder);
+                    File.WriteAllText(pendingLogfile, JsonConvert.SerializeObject(pendingOrders, Formatting.Indented));
+                    removed = true;
+                }
+
+                // Check and remove from confirmed orders
+                var orders = Getdonhangformlog();
+                var order = orders.FirstOrDefault(o => o.MaDonHang == maDonHang);
+                if (order != null)
+                {
+                    orders.Remove(order);
+                    File.WriteAllText(logfile, JsonConvert.SerializeObject(orders, Formatting.Indented));
+                    removed = true;
+
+                    // Remove from ThanhToanDonHang in database
+                    using (var context = new databases())
+                    {
+                        var thanhToan = context.ThanhToanDonHangs.FirstOrDefault(t => t.MaDonHang == maDonHang);
+                        if (thanhToan != null)
+                        {
+                            context.ThanhToanDonHangs.Remove(thanhToan);
+                            context.SaveChanges();
+                        }
+                    }
+                }
+
+                return removed;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi hủy đơn hàng: " + ex.Message);
+            }
+        }
+    }
+
+    public class PendingOrder : XacNhanDonhang
+    {
+        public string MaNhaXe { get; set; }
+        public string MaPhuongTien { get; set; }
+        public double? TongTien { get; set; }
+        public string PhuongThucThanhToan { get; set; }
+        public string TrangThai { get; set; }
+        public string MaNguoiDung { get; set; }
     }
 }

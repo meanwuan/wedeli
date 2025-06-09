@@ -45,6 +45,8 @@
             this.turnback = new System.Windows.Forms.Button();
             this.conf = new System.Windows.Forms.Button();
             this.nhaxe = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.phuongthucthanhtoan = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -138,7 +140,7 @@
             // loaidon
             // 
             this.loaidon.Location = new System.Drawing.Point(223, 111);
-            this.loaidon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loaidon.Margin = new System.Windows.Forms.Padding(2);
             this.loaidon.Name = "loaidon";
             this.loaidon.Size = new System.Drawing.Size(170, 20);
             this.loaidon.TabIndex = 12;
@@ -146,7 +148,7 @@
             // trongtai
             // 
             this.trongtai.Location = new System.Drawing.Point(223, 148);
-            this.trongtai.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.trongtai.Margin = new System.Windows.Forms.Padding(2);
             this.trongtai.Name = "trongtai";
             this.trongtai.Size = new System.Drawing.Size(170, 20);
             this.trongtai.TabIndex = 13;
@@ -154,7 +156,7 @@
             // diachinhanhang
             // 
             this.diachinhanhang.Location = new System.Drawing.Point(223, 183);
-            this.diachinhanhang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.diachinhanhang.Margin = new System.Windows.Forms.Padding(2);
             this.diachinhanhang.Name = "diachinhanhang";
             this.diachinhanhang.Size = new System.Drawing.Size(170, 20);
             this.diachinhanhang.TabIndex = 14;
@@ -162,7 +164,7 @@
             // diachigiaohang
             // 
             this.diachigiaohang.Location = new System.Drawing.Point(223, 218);
-            this.diachigiaohang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.diachigiaohang.Margin = new System.Windows.Forms.Padding(2);
             this.diachigiaohang.Name = "diachigiaohang";
             this.diachigiaohang.Size = new System.Drawing.Size(170, 20);
             this.diachigiaohang.TabIndex = 15;
@@ -170,7 +172,7 @@
             // tennguoinhan
             // 
             this.tennguoinhan.Location = new System.Drawing.Point(223, 254);
-            this.tennguoinhan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tennguoinhan.Margin = new System.Windows.Forms.Padding(2);
             this.tennguoinhan.Name = "tennguoinhan";
             this.tennguoinhan.Size = new System.Drawing.Size(170, 20);
             this.tennguoinhan.TabIndex = 16;
@@ -178,7 +180,7 @@
             // thanhtien
             // 
             this.thanhtien.Location = new System.Drawing.Point(223, 327);
-            this.thanhtien.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.thanhtien.Margin = new System.Windows.Forms.Padding(2);
             this.thanhtien.Name = "thanhtien";
             this.thanhtien.Size = new System.Drawing.Size(170, 20);
             this.thanhtien.TabIndex = 18;
@@ -186,8 +188,8 @@
             // turnback
             // 
             this.turnback.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.turnback.Location = new System.Drawing.Point(64, 376);
-            this.turnback.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.turnback.Location = new System.Drawing.Point(62, 399);
+            this.turnback.Margin = new System.Windows.Forms.Padding(2);
             this.turnback.Name = "turnback";
             this.turnback.Size = new System.Drawing.Size(90, 37);
             this.turnback.TabIndex = 19;
@@ -198,8 +200,8 @@
             // conf
             // 
             this.conf.BackColor = System.Drawing.Color.Lime;
-            this.conf.Location = new System.Drawing.Point(234, 376);
-            this.conf.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.conf.Location = new System.Drawing.Point(232, 399);
+            this.conf.Margin = new System.Windows.Forms.Padding(2);
             this.conf.Name = "conf";
             this.conf.Size = new System.Drawing.Size(82, 37);
             this.conf.TabIndex = 20;
@@ -211,16 +213,38 @@
             // 
             this.nhaxe.FormattingEnabled = true;
             this.nhaxe.Location = new System.Drawing.Point(223, 288);
-            this.nhaxe.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nhaxe.Margin = new System.Windows.Forms.Padding(2);
             this.nhaxe.Name = "nhaxe";
             this.nhaxe.Size = new System.Drawing.Size(170, 21);
             this.nhaxe.TabIndex = 21;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(26, 365);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(151, 15);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Phương thức than toán";
+            // 
+            // phuongthucthanhtoan
+            // 
+            this.phuongthucthanhtoan.FormattingEnabled = true;
+            this.phuongthucthanhtoan.Location = new System.Drawing.Point(223, 365);
+            this.phuongthucthanhtoan.Margin = new System.Windows.Forms.Padding(2);
+            this.phuongthucthanhtoan.Name = "phuongthucthanhtoan";
+            this.phuongthucthanhtoan.Size = new System.Drawing.Size(170, 21);
+            this.phuongthucthanhtoan.TabIndex = 23;
             // 
             // addproduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 447);
+            this.Controls.Add(this.phuongthucthanhtoan);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.nhaxe);
             this.Controls.Add(this.conf);
             this.Controls.Add(this.turnback);
@@ -238,7 +262,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "addproduct";
             this.Text = "addproduct";
             this.Load += new System.EventHandler(this.addproduct_Load);
@@ -266,5 +290,7 @@
         private System.Windows.Forms.Button turnback;
         private System.Windows.Forms.Button conf;
         private System.Windows.Forms.ComboBox nhaxe;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox phuongthucthanhtoan;
     }
 }

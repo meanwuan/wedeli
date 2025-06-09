@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,6 +16,9 @@ namespace WeDeLi1.service
         private readonly LoginService loginService;
         private readonly RegisterService registerService;
         private readonly TransportMapService transportMapService;
+        private readonly addorders addOrderService;
+        private readonly UserService userService;
+        private readonly OrderStatusService orderStatusService;
         private bool isRunning;
         private string currentCaptchaText;
 
@@ -28,6 +32,9 @@ namespace WeDeLi1.service
             loginService = new LoginService();
             registerService = new RegisterService();
             transportMapService = new TransportMapService();
+            addOrderService = new addorders();
+            userService = new UserService();
+            orderStatusService = new OrderStatusService();
         }
 
         public async Task StartAsync()
@@ -146,6 +153,156 @@ namespace WeDeLi1.service
                     var result = await transportMapService.GetNearbyBusStations(nearbyBusStationsRequest.UserId, nearbyBusStationsRequest.RadiusKm);
                     responseString = JsonSerializer.Serialize(result);
                 }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/confirmorder")
+                {
+                    var confirmRequest = JsonSerializer.Deserialize<ConfirmOrderRequest>(requestBody);
+                    addOrderService.ConfirmOrder(confirmRequest.MaDonHangTam);
+                    responseString = JsonSerializer.Serialize(new { Success = true, Message = "Đơn hàng đã được xác nhận" });
+                }
+                else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/pendingorders")
+                {
+                    var pendingOrders = addOrderService.GetPendingOrders();
+                    responseString = JsonSerializer.Serialize(new { Success = true, Data = pendingOrders });
+                }
+                else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/orderstatus")
+                {
+                    var queryParams = request.Url.Query.TrimStart('?').Split('&')
+                        .Select(param => param.Split('='))
+                        .ToDictionary(param => param[0], param => param[1]);
+                    string maDonHang;
+                    queryParams.TryGetValue("maDonHang", out maDonHang);
+
+                    if (string.IsNullOrEmpty(maDonHang))
+                    {
+                        SendErrorResponse(context, HttpStatusCode.BadRequest, "Thiếu MaDonHang");
+                        return;
+                    }
+
+                    var orderStatus = orderStatusService.GetOrderStatus(maDonHang);
+                    responseString = JsonSerializer.Serialize(new
+                    {
+                        Success = true,
+                        Data = orderStatus,
+                        Message = "Lấy trạng thái đơn hàng thành công"
+                    });
+                }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/cancelorder")
+                {
+                    var cancelRequest = JsonSerializer.Deserialize<CancelOrderRequest>(requestBody);
+                    if (string.IsNullOrEmpty(cancelRequest.MaDonHang))
+                    {
+                        SendErrorResponse(context, HttpStatusCode.BadRequest, "Thiếu MaDonHang");
+                        return;
+                    }
+
+                    bool success = orderStatusService.CancelOrder(cancelRequest.MaDonHang);
+                    if (success)
+                    {
+                        responseString = JsonSerializer.Serialize(new { Success = true, Message = "Đơn hàng đã được hủy thành công" });
+                    }
+                    else
+                    {
+                        responseString = JsonSerializer.Serialize(new { Success = false, Message = "Không tìm thấy đơn hàng để hủy" });
+                    }
+                }
+                else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/editorder")
+                {
+                    var queryParams = request.Url.Query.TrimStart('?').Split('&')
+                        .Select(param => param.Split('='))
+                        .ToDictionary(param => param[0], param => param[1]);
+                    string maDonHang;
+                    queryParams.TryGetValue("maDonHang", out maDonHang);
+
+                    if (string.IsNullOrEmpty(maDonHang))
+                    {
+                        SendErrorResponse(context, HttpStatusCode.BadRequest, "Thiếu MaDonHang");
+                        return;
+                    }
+
+                    var order = orderStatusService.GetOrderForEdit(maDonHang);
+                    responseString = JsonSerializer.Serialize(new
+                    {
+                        Success = true,
+                        Data = new
+                        {
+                            MaDonHang = order.MaDonHang,
+                            LoaiDon = order.LoaiDon,
+                            KhoiLuong = order.KhoiLuong,
+                            tenNguoiNhan = order.tenNguoiNhan,
+                            DiaChiLayHang = order.DiaChiLayHang,
+                            DiaChiGiaoHang = order.DiaChiGiaoHang,
+                            ThoiGianLayHang = order.ThoiGianLayHang,
+                            ThoiGianGiaoHang = order.ThoiGianGiaoHang,
+                            TongTien = order.TongTien,
+                            PhuongThucThanhToan = order.PhuongThucThanhToan
+                        },
+                        Message = "Lấy thông tin đơn hàng để chỉnh sửa thành công"
+                    });
+                }
+                else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/userinfo")
+                {
+                    var queryParams = request.Url.Query.TrimStart('?').Split('&')
+                        .Select(param => param.Split('='))
+                        .ToDictionary(param => param[0], param => param[1]);
+                    string userId;
+                    queryParams.TryGetValue("userId", out userId);
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        SendErrorResponse(context, HttpStatusCode.BadRequest, "Thiếu UserId");
+                        return;
+                    }
+
+                    var userInfo = userService.GetUserInfo(userId);
+                    if (userInfo != null)
+                    {
+                        responseString = JsonSerializer.Serialize(new
+                        {
+                            Success = true,
+                            Data = new
+                            {
+                                HoTen = userInfo.HoTen,
+                                SoDienThoai = userInfo.SoDienThoai,
+                                Email = userInfo.Email,
+                                DiaChi = userInfo.DiaChi,
+                                NgaySinh = userInfo.NgaySinh?.ToString("yyyy-MM-dd"),
+                                VaiTro = userInfo.TenDangNhap
+                            },
+                            Message = "Lấy thông tin người dùng thành công"
+                        });
+                    }
+                    else
+                    {
+                        responseString = JsonSerializer.Serialize(new { Success = false, Message = "Không tìm thấy người dùng" });
+                    }
+                }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/userinfo")
+                {
+                    var updateRequest = JsonSerializer.Deserialize<UserInfoUpdateRequest>(requestBody);
+                    if (string.IsNullOrEmpty(updateRequest.UserId))
+                    {
+                        SendErrorResponse(context, HttpStatusCode.BadRequest, "Thiếu UserId");
+                        return;
+                    }
+
+                    var userInfo = new UserInfo
+                    {
+                        HoTen = updateRequest.HoTen,
+                        SoDienThoai = updateRequest.SoDienThoai,
+                        Email = updateRequest.Email,
+                        DiaChi = updateRequest.DiaChi,
+                        NgaySinh = DateTime.TryParse(updateRequest.NgaySinh, out DateTime ngaySinh) ? ngaySinh : (DateTime?)null,
+                        TenDangNhap = updateRequest.VaiTro
+                    };
+
+                    if (userService.UpdateUserInfo(updateRequest.UserId, userInfo))
+                    {
+                        responseString = JsonSerializer.Serialize(new { Success = true, Message = "Cập nhật thông tin thành công" });
+                    }
+                    else
+                    {
+                        responseString = JsonSerializer.Serialize(new { Success = false, Message = "Không tìm thấy người dùng để cập nhật" });
+                    }
+                }
                 else
                 {
                     response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -204,18 +361,6 @@ namespace WeDeLi1.service
             public string VaiTro { get; set; }
         }
 
-        private class UserRequest
-        {
-            public string HoTen { get; set; }
-            public string TenDangNhap { get; set; }
-            public string MatKhau { get; set; }
-            public string Email { get; set; }
-            public string SoDienThoai { get; set; }
-            public DateTimeOffset? NgaySinh { get; set; }
-            public string DiaChi { get; set; }
-            public string VaiTro { get; set; }
-        }
-
         private class UserLocationRequest
         {
             public string UserId { get; set; }
@@ -230,6 +375,27 @@ namespace WeDeLi1.service
         {
             public string UserId { get; set; }
             public double RadiusKm { get; set; }
+        }
+
+        private class ConfirmOrderRequest
+        {
+            public string MaDonHangTam { get; set; }
+        }
+
+        private class CancelOrderRequest
+        {
+            public string MaDonHang { get; set; }
+        }
+
+        private class UserInfoUpdateRequest
+        {
+            public string UserId { get; set; }
+            public string HoTen { get; set; }
+            public string SoDienThoai { get; set; }
+            public string Email { get; set; }
+            public string DiaChi { get; set; }
+            public string NgaySinh { get; set; }
+            public string VaiTro { get; set; }
         }
     }
 }
