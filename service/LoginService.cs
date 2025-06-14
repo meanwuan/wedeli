@@ -37,40 +37,52 @@ namespace WeDeLi1.service
                 };
             }
 
-            using (var db = new databases())
+            try
             {
-                // Check NguoiDung (User)
-                var nguoiDung = db.NguoiDungs.FirstOrDefault(x => x.TenDangNhap == username && x.MatKhau == password);
-                if (nguoiDung != null)
+                using (var db = new databases())
                 {
-                    sessionmanager.curentUser = nguoiDung.MaNguoiDung;
+                    // Check NguoiDung (User)
+                    var nguoiDung = db.NguoiDungs.FirstOrDefault(x => x.TenDangNhap == username && x.MatKhau == password);
+                    if (nguoiDung != null)
+                    {
+                        sessionmanager.curentUser = nguoiDung.MaNguoiDung;
+                        return new LoginResult
+                        {
+                            Success = true,
+                            Message = "Đăng nhập thành công (Người dùng)",
+                            UserId = nguoiDung.MaNguoiDung,
+                            UserType = "User"
+                        };
+                    }
+
+                    // Check NhaXe (Transport)
+                    var nhaXe = db.NhaXes.FirstOrDefault(x => x.TenDangNhap == username && x.MatKhau == password);
+                    if (nhaXe != null)
+                    {
+                        sessionmanager.currentTransport = nhaXe.MaNhaXe;
+                        return new LoginResult
+                        {
+                            Success = true,
+                            Message = "Đăng nhập thành công (Nhà xe)",
+                            UserId = nhaXe.MaNhaXe,
+                            UserType = "Transport"
+                        };
+                    }
+
+                    // Authentication failed
                     return new LoginResult
                     {
-                        Success = true,
-                        Message = "Đăng nhập thành công (Người dùng)",
-                        UserId = nguoiDung.MaNguoiDung,
-                        UserType = "User"
+                        Success = false,
+                        Message = "Tên đăng nhập hoặc mật khẩu không đúng"
                     };
                 }
-
-                // Check NhaXe (Transport)
-                var nhaXe = db.NhaXes.FirstOrDefault(x => x.TenDangNhap == username && x.MatKhau == password);
-                if (nhaXe != null)
-                {
-                    return new LoginResult
-                    {
-                        Success = true,
-                        Message = "Đăng nhập thành công (Nhà xe)",
-                        UserId = nhaXe.MaNhaXe, // Assuming NhaXe has a MaNhaXe field
-                        UserType = "Transport"
-                    };
-                }
-
-                // Authentication failed
+            }
+            catch (Exception ex)
+            {
                 return new LoginResult
                 {
                     Success = false,
-                    Message = "Tên đăng nhập hoặc mật khẩu không đúng"
+                    Message = $"Lỗi: {ex.Message}"
                 };
             }
         }

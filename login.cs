@@ -4,22 +4,27 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using WeDeLi1.Dbase;
+using WeDeLi1.formtransfer;
 using WeDeLi1.service;
+using WeDeLi1.style;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WeDeLi1
 {
-  
     public partial class login : Form
     {
         string currentCaptcha;
         private readonly LoginService loginService;
 
+
         public login()
         {
+            
             InitializeComponent();
             loginService = new LoginService();
             LoadCaptcha();
             pass.PasswordChar = checkBox1.Checked ? '\0' : '*';
+            imageborder.BogocPictureBox(logo, 50);
         }
 
         private void LoadCaptcha()
@@ -81,13 +86,23 @@ namespace WeDeLi1
                 this.Hide();
                 if (result.UserType == "User")
                 {
-                    var userForm = new userform(); // Thay bằng form người dùng thật sự
+                    var userForm = new userform();
+
+                    // *** THÊM DÒNG NÀY VÀO ***
+                    // Dòng này đảm bảo khi userForm đóng lại (vì bất cứ lý do gì),
+                    // form login sẽ được hiển thị trở lại.
+                    userForm.FormClosed += (s, args) => this.Show();
+
                     userForm.Show();
                 }
                 else if (result.UserType == "Transport")
                 {
-                    //var nhaXeForm = new TransportForm(); // Thay bằng form nhà xe thật sự
-                    //nhaXeForm.Show();
+                    var nhaXeForm = new maintransfer();
+
+                    // *** BẠN CŨNG NÊN THÊM DÒNG TƯƠNG TỰ CHO FORM NHÀ XE ***
+                    nhaXeForm.FormClosed += (s, args) => this.Show();
+
+                    nhaXeForm.Show();
                 }
             }
             else
@@ -95,7 +110,6 @@ namespace WeDeLi1
                 LoadCaptcha();
             }
         }
-
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -116,12 +130,12 @@ namespace WeDeLi1
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void reloandcap_Click(object sender, EventArgs e)
         {
             LoadCaptcha();
         }
+
     }
 }

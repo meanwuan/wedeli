@@ -1,45 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeDeLi1.Dbase;
 using WeDeLi1.Service;
 using WeDeLi1.style;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 namespace WeDeLi1
 {
-    
     public partial class register : Form
     {
         string currentCaptcha;
         private readonly RegisterService registerService;
+
         public register()
         {
             InitializeComponent();
-            borderbutton.bogocbovien(button1,12);
+            borderbutton.bogocbovien(button1, 12);
             borderbutton.bogocbovien(button2, 12);
             this.DialogResult = DialogResult.OK;
             registerService = new RegisterService();
             LoadCaptcha();
-            
         }
-        
 
         private void button1_Click(object sender, EventArgs e)
         {
+            name.Text = "";
             username.Text = "";
             pass.Text = "";
             repass.Text = "";
             Email.Text = "";
             sdt.Text = "";
             dateTimePicker1.Value = DateTime.Now;
-            role.Text = "Người đặt Hàng";
+            address.Text = "";
+            role.Text = "Người dùng";
+            textBoxSotien.Text = "";
+            LoadCaptcha();
+        }
+
+        private void LoadCaptcha()
+        {
+            currentCaptcha = GenerateCaptcha(5);
+            pictureBox1.Image = GenerateCaptchaImage(currentCaptcha);
         }
 
         private string GenerateCaptcha(int length)
@@ -49,11 +52,7 @@ namespace WeDeLi1
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        private void LoadCaptcha()
-        {
-            currentCaptcha = GenerateCaptcha(5);
-            pictureBox1.Image = GenerateCaptchaImage(currentCaptcha);
-        }
+
         private Bitmap GenerateCaptchaImage(string captchaText)
         {
             Bitmap bitmap = new Bitmap(200, 50);
@@ -75,27 +74,37 @@ namespace WeDeLi1
             }
             return bitmap;
         }
+
         private void button2_Click(object sender, EventArgs e)
         {
             string hoTen = name.Text.Trim();
             string tenDangNhap = username.Text.Trim();
             string matKhau = pass.Text.Trim();
-            string email = Email.Text.Trim(); // Fixed: Corrected from repass.Text to Email.Text
+            string email = Email.Text.Trim();
             string soDienThoai = sdt.Text.Trim();
             DateTimeOffset? ngaySinh = dateTimePicker1.Value;
             string diaChi = address.Text.Trim();
-            string vaiTro = role.Text.Trim(); // "Người dùng" hoặc "Nhà xe"
+            string vaiTro = role.Text.Trim();
+            string captchaInput = textBoxSotien.Text.Trim();
 
-            // Validate password confirmation
-            if (matKhau != repass.Text.Trim())
+            // Kiểm tra CAPTCHA giống như trong login.cs
+            if (string.IsNullOrWhiteSpace(captchaInput) || captchaInput != currentCaptcha)
             {
-                MessageBox.Show("Mật khẩu xác nhận không khớp");
+                MessageBox.Show("CAPTCHA không chính xác hoặc để trống. Vui lòng thử lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadCaptcha();
                 return;
             }
 
-            var result = registerService.RegisterUser(hoTen, tenDangNhap, matKhau, email, soDienThoai, ngaySinh, diaChi, vaiTro);
+            // Kiểm tra mật khẩu xác nhận
+            if (matKhau != repass.Text.Trim())
+            {
+                MessageBox.Show("Mật khẩu xác nhận không khớp", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            MessageBox.Show(result.Message);
+            var result = registerService.RegisterUser(hoTen, tenDangNhap, matKhau, email, soDienThoai, ngaySinh, diaChi, vaiTro, captchaInput, currentCaptcha);
+
+            MessageBox.Show(result.Message, result.Success ? "Thành công" : "Lỗi", MessageBoxButtons.OK, result.Success ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
             if (result.Success)
             {
@@ -104,8 +113,11 @@ namespace WeDeLi1
                 loginForm.Show();
                 this.Close();
             }
+            else
+            {
+                LoadCaptcha();
+            }
         }
-
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -119,6 +131,11 @@ namespace WeDeLi1
             var loginForm = new login();
             loginForm.Show();
             this.Close();
+        }
+
+        private void reloadCaptcha_Click(object sender, EventArgs e)
+        {
+            LoadCaptcha();
         }
 
         private void register_Load(object sender, EventArgs e)

@@ -26,6 +26,7 @@ namespace WeDeLi1.Dbase
         [StringLength(20)]
         public string TrangThai { get; set; }
 
+        public DateTime? ngaydientai { get; set; }
         public virtual NhanVien NhanVien { get; set; }
     }
 }

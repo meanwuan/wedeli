@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace WeDeLi1.style
 {
     public static class imageborder
     {
-        public static Bitmap bogocima(Image image, int radius)
+        public static void BogocPictureBox(PictureBox pictureBox, int radius)
         {
+            if (pictureBox.Image == null) return;
+
+            Image image = pictureBox.Image;
             int width = image.Width;
             int height = image.Height;
 
@@ -36,7 +36,19 @@ namespace WeDeLi1.style
                     }
                 }
             }
-            return roundedImage;
+
+            pictureBox.Image = roundedImage;
+
+            // Bo góc vùng hiển thị PictureBox
+            System.Drawing.Drawing2D.GraphicsPath roundedRegion = new GraphicsPath();
+            roundedRegion.StartFigure();
+            roundedRegion.AddArc(0, 0, radius * 2, radius * 2, 180, 90);
+            roundedRegion.AddArc(pictureBox.Width - radius * 2, 0, radius * 2, radius * 2, 270, 90);
+            roundedRegion.AddArc(pictureBox.Width - radius * 2, pictureBox.Height - radius * 2, radius * 2, radius * 2, 0, 90);
+            roundedRegion.AddArc(0, pictureBox.Height - radius * 2, radius * 2, radius * 2, 90, 90);
+            roundedRegion.CloseFigure();
+
+            pictureBox.Region = new Region(roundedRegion);
         }
     }
 }

@@ -54,6 +54,9 @@
     <Reference Include="AWSSDK.SecurityToken, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
       <HintPath>packages\AWSSDK.SecurityToken.3.7.100.14\lib\net45\AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
+    <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
+      <HintPath>packages\BCrypt.Net-Next.4.0.3\lib\net48\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
     <Reference Include="DnsClient, Version=1.6.1.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>packages\DnsClient.1.6.1\lib\net471\DnsClient.dll</HintPath>
     </Reference>
@@ -225,6 +228,12 @@
     <Compile Include="Dbase\PhuongTien.cs" />
     <Compile Include="Dbase\sessionmanager.cs" />
     <Compile Include="Dbase\ThanhToanDonHang.cs" />
+    <Compile Include="formtransfer\addnhanvien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\addnhanvien.Designer.cs">
+      <DependentUpon>addnhanvien.cs</DependentUpon>
+    </Compile>
     <Compile Include="formtransfer\addproduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -254,6 +263,12 @@
     </Compile>
     <Compile Include="formtransfer\changexe.Designer.cs">
       <DependentUpon>changexe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="formtransfer\infor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formtransfer\infor.Designer.cs">
+      <DependentUpon>infor.cs</DependentUpon>
     </Compile>
     <Compile Include="formtransfer\listnhanvien.cs">
       <SubType>Form</SubType>
@@ -339,9 +354,13 @@
       <DependentUpon>userform.cs</DependentUpon>
     </Compile>
     <Compile Include="style\borderbutton.cs" />
+    <Compile Include="style\UIUtils.cs" />
     <Compile Include="style\imageborder.cs" />
     <EmbeddedResource Include="conf_pro.resx">
       <DependentUpon>conf_pro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\addnhanvien.resx">
+      <DependentUpon>addnhanvien.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="formtransfer\addproduct.resx">
       <DependentUpon>addproduct.cs</DependentUpon>
@@ -357,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="formtransfer\changexe.resx">
       <DependentUpon>changexe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="formtransfer\infor.resx">
+      <DependentUpon>infor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="formtransfer\listnhanvien.resx">
       <DependentUpon>listnhanvien.cs</DependentUpon>

@@ -22,6 +22,13 @@ namespace WeDeLi1.Dbase
         public string MaNhaXe { get; set; }
 
         public double? TongTien { get; set; }
+        [StringLength(20)]
+        public string MaPhuongThuc { get; set; }
+
+        public DateTime? NgayThanhToan { get; set; }
+
+        [StringLength(20)]
+        public string TrangThai { get; set; }
 
         public virtual DonHang DonHang { get; set; }
 

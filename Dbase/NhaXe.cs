@@ -27,8 +27,7 @@ namespace WeDeLi1.Dbase
         [StringLength(50)]
         public string TenChu { get; set; }
 
-        [Required]
-        public int sotien { get; set; }
+        //public int sotien { get; set; }
 
         [Required]
         [StringLength(50)]

@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WeDeLi1.Dbase;
 using WeDeLi1.Service;
 
 namespace WeDeLi1.service
@@ -127,7 +128,9 @@ namespace WeDeLi1.service
                         registerRequest.SoDienThoai,
                         registerRequest.NgaySinh,
                         registerRequest.DiaChi,
-                        registerRequest.VaiTro);
+                        registerRequest.VaiTro,
+                        registerRequest.CaptchaInput,
+                        registerRequest.CurrentCaptcha);
                     responseString = JsonSerializer.Serialize(result);
                 }
                 else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/captcha")
@@ -303,6 +306,88 @@ namespace WeDeLi1.service
                         responseString = JsonSerializer.Serialize(new { Success = false, Message = "Không tìm thấy người dùng để cập nhật" });
                     }
                 }
+                else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/addorder")
+                {
+                    try
+                    {
+                        var pendingOrderRequest = JsonSerializer.Deserialize<PendingOrderRequest>(requestBody);
+                        if (pendingOrderRequest == null || string.IsNullOrEmpty(pendingOrderRequest.MaNguoiDung))
+                        {
+                            SendErrorResponse(context, HttpStatusCode.BadRequest, "Dữ liệu không hợp lệ hoặc thiếu MaNguoiDung");
+                            return;
+                        }
+
+                        // Tạo một đối tượng XacNhanDonhang từ request
+                        var orderDataForQueue = new XacNhanDonhang
+                        {
+                            MaDonHangTam = $"TEMP_{pendingOrderRequest.MaNguoiDung}_{DateTime.Now:yyyyMMddHHmmss}",
+                            LoaiDon = pendingOrderRequest.LoaiDon,
+                            KhoiLuong = pendingOrderRequest.KhoiLuong,
+                            tenNguoiNhan = pendingOrderRequest.TenNguoiNhan,
+                            DiaChiLayHang = pendingOrderRequest.DiaChiLayHang,
+                            DiaChiGiaoHang = pendingOrderRequest.DiaChiGiaoHang,
+                            ThoiGianLayHang = DateTime.Now
+                        };
+
+                        // Gọi service để thêm đơn hàng vào hàng đợi
+                        addOrderService.AddPendingOrder(
+                            orderDataForQueue,
+                            pendingOrderRequest.MaNhaXe,
+                            pendingOrderRequest.TongTien,
+                            pendingOrderRequest.PhuongThucThanhToan
+                        );
+
+                        responseString = JsonSerializer.Serialize(new { Success = true, Message = "Đã gửi yêu cầu đơn hàng thành công!" });
+                    }
+                    catch (Exception ex)
+                    {
+                        SendErrorResponse(context, HttpStatusCode.InternalServerError, $"Lỗi khi tạo đơn hàng: {ex.Message}");
+                        return;
+                    }
+                }
+                else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/api/orderhistory")
+                {
+                    string userId = request.QueryString["userId"];
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        SendErrorResponse(context, HttpStatusCode.BadRequest, "Thiếu UserId");
+                        return;
+                    }
+
+                    try
+                    {
+                        var pendingOrders = addOrderService.GetPendingOrders().Where(o => o.MaNguoiDung == userId);
+                        var confirmedOrders = addOrderService.Getdonhangformlog().Where(o => o.MaNguoiDung == userId);
+
+                        // Chuyển đổi để có cấu trúc nhất quán
+                        var allOrders = pendingOrders.Select(p => new {
+                            MaDonHang = p.MaDonHangTam,
+                            p.LoaiDon,
+                            p.KhoiLuong,
+                            p.tenNguoiNhan,
+                            p.DiaChiGiaoHang,
+                            p.TrangThai,
+                            p.TongTien
+                        }).ToList();
+
+                        allOrders.AddRange(confirmedOrders.Select(c => new {
+                            c.MaDonHang,
+                            c.LoaiDon,
+                            c.KhoiLuong,
+                            c.tenNguoiNhan,
+                            c.DiaChiGiaoHang,
+                            c.TrangThai,
+                            c.TongTien
+                        }));
+
+                        responseString = JsonSerializer.Serialize(new { Success = true, Data = allOrders });
+                    }
+                    catch (Exception ex)
+                    {
+                        SendErrorResponse(context, HttpStatusCode.InternalServerError, $"Lỗi khi lấy lịch sử đơn hàng: {ex.Message}");
+                        return;
+                    }
+                }
                 else
                 {
                     response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -359,8 +444,21 @@ namespace WeDeLi1.service
             public DateTimeOffset? NgaySinh { get; set; }
             public string DiaChi { get; set; }
             public string VaiTro { get; set; }
+            public string CaptchaInput { get; set; }
+            public string CurrentCaptcha { get; set; }
         }
-
+        private class PendingOrderRequest
+        {
+            public string LoaiDon { get; set; }
+            public double KhoiLuong { get; set; }
+            public string TenNguoiNhan { get; set; }
+            public string DiaChiLayHang { get; set; }
+            public string DiaChiGiaoHang { get; set; }
+            public string MaNhaXe { get; set; }
+            public double TongTien { get; set; }
+            public string PhuongThucThanhToan { get; set; }
+            public string MaNguoiDung { get; set; }
+        }
         private class UserLocationRequest
         {
             public string UserId { get; set; }

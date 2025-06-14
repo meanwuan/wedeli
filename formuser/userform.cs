@@ -200,18 +200,23 @@ namespace WeDeLi1
 
         private async Task DisplayBusStations(JObject data)
         {
+            // Xóa dữ liệu cũ trước khi thêm mới
+            dataGridView1.Rows.Clear();
+
             ConfigureDataGridView();
             var busStations = data["Data"]["NearbyBusStations"]?.ToObject<List<JObject>>() ?? new List<JObject>();
 
             foreach (var station in busStations)
             {
+                // ** THAY ĐỔI: Thêm các tham số còn thiếu và tình trạng mặc định **
                 dataGridView1.Rows.Add(
                     station["TenChu"]?.ToString(),
-                    "", // SoLuongXe
-                    "", // LoaiHangCho
-                    "", // KhoBi
+                    "Chưa có dữ liệu", // Dữ liệu cho "Số Lượng Xe" cần được thêm từ API
+                    "Chưa có dữ liệu", // Dữ liệu cho "Loại Hàng Chở" cần được thêm từ API
+                    "Chưa có dữ liệu", // Dữ liệu cho "Kho Bì" cần được thêm từ API
                     station["DiaChi"]?.ToString(),
-                    station["Distance"]?.ToString()
+                    "Hoạt động", // Tình trạng mặc định
+                    station["Distance"]?.ToString() // Khoảng cách
                 );
             }
         }
@@ -219,13 +224,15 @@ namespace WeDeLi1
         private void ConfigureDataGridView()
         {
             dataGridView1.Columns.Clear();
-            dataGridView1.Columns.Add("NhaXeGanBan", "nhà xe gần bạn");
-            dataGridView1.Columns.Add("SoLuongXe", "số lượng xe");
-            dataGridView1.Columns.Add("LoaiHangCho", "loại hàng chở");
-            dataGridView1.Columns.Add("KhoBi", "kho bì");
-            dataGridView1.Columns.Add("DiaChi", "địa chỉ");
+            // ** THAY ĐỔI: Cập nhật lại các cột cho đúng và đủ **
+            dataGridView1.Columns.Add("NhaXeGanBan", "Nhà xe gần bạn");
+            dataGridView1.Columns.Add("SoLuongXe", "Số lượng xe");
+            dataGridView1.Columns.Add("LoaiHangCho", "Loại hàng chuyên chở");
+            dataGridView1.Columns.Add("KhoBi", "Kho bì");
+            dataGridView1.Columns.Add("DiaChi", "Địa chỉ");
             dataGridView1.Columns.Add("TinhTrang", "Tình trạng");
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.Columns.Add("Distance", "Khoảng cách"); // Thêm cột khoảng cách
+            dataGridView1.AutoSizeColumnsMode = (DataGridViewAutoSizeColumnsMode)DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private void webview_Click(object sender, EventArgs e)
@@ -254,6 +261,25 @@ namespace WeDeLi1
         {
             var infoForm = new infor();
             infoForm.Show();
+        }
+
+        private void signout_Click(object sender, EventArgs e)
+        {
+            DialogResult confirm = MessageBox.Show(
+        "Bạn có chắc chắn muốn đăng xuất không?",
+        "Xác nhận",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.Yes)
+            {
+                // Xóa thông tin phiên làm việc
+                sessionmanager.curentUser = null;
+                sessionmanager.currentTransport = null;
+
+                // Đóng form hiện tại.
+                this.Close();
+            }
         }
     }
 }

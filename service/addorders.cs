@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WeDeLi1.Dbase;
-using System.Data;
-using System.IO;
-using Newtonsoft.Json;
 using System.Windows.Forms;
+using WeDeLi1.Dbase;
 
 namespace WeDeLi1.service
 {
@@ -19,36 +20,70 @@ namespace WeDeLi1.service
 
         public string themdonhang(DonHang donhang)
         {
+            // Logic tạo mã đơn hàng tự động tăng
+            List<DonHang> existingorders = Getdonhangformlog();
+            int maxId = 0;
+            if (existingorders.Any())
+            {
+                maxId = existingorders
+                    .Select(o => {
+                        string numericPart = new string(o.MaDonHang.Where(char.IsDigit).ToArray());
+                        int.TryParse(numericPart, out int id);
+                        return id;
+                    })
+                    .DefaultIfEmpty(0)
+                    .Max();
+            }
+            int nextId = maxId + 1;
+            donhang.MaDonHang = $"DH{nextId:D6}";
+            donhang.TrangThai = "Đã xác nhận";
+
+            // Ghi vào log file
+            existingorders.Add(donhang);
+            File.WriteAllText(logfile, JsonConvert.SerializeObject(existingorders, Formatting.Indented));
+
+            // ---- BẮT ĐẦU KHỐI TRY-CATCH CHI TIẾT ----
             try
             {
-                string prefix = $"{donhang.MaNguoiDung}_{donhang.MaPhuongTien}_{DateTime.Now:ddMMyyyy}";
-                List<DonHang> existingorders = Getdonhangformlog();
-                int nextNumber = existingorders.Count(o => o.MaDonHang.StartsWith(prefix)) + 1;
-                donhang.MaDonHang = $"{prefix}_{nextNumber:D4}";
-                donhang.TrangThai = "Đã xác nhận";
-
-                existingorders.Add(donhang);
-                File.WriteAllText(logfile, JsonConvert.SerializeObject(existingorders, Formatting.Indented));
-
-                // Add to ThanhToanDonHang
+                // Thêm thông tin thanh toán vào CSDL
                 using (var context = new databases())
                 {
+                    context.DonHangs.Add(donhang);
                     var thanhToan = new ThanhToanDonHang
                     {
                         MaDonHang = donhang.MaDonHang,
                         MaNhaXe = donhang.MaNhaXe,
                         TongTien = donhang.TongTien,
-                        Bac = 1 // Default tier
+                        Bac = 1
                     };
                     context.ThanhToanDonHangs.Add(thanhToan);
-                    context.SaveChanges();
+                    context.SaveChanges(); // Lệnh gây ra lỗi nằm ở đây
+                }
+                return donhang.MaDonHang;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                // Đây là phần quan trọng để bắt lỗi chi tiết
+                var errorMessages = new StringBuilder();
+                errorMessages.AppendLine("Lỗi xác thực dữ liệu:");
+
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        // Ghép thông báo lỗi: Tên thuộc tính bị lỗi và thông điệp lỗi
+                        string message = $"Thuộc tính: {validationError.PropertyName}, Lỗi: {validationError.ErrorMessage}";
+                        errorMessages.AppendLine(message);
+                    }
                 }
 
-                return donhang.MaDonHang;
+                // Ném ra một exception mới với thông điệp chi tiết đã thu thập được
+                throw new Exception(errorMessages.ToString());
             }
             catch (Exception ex)
             {
-                throw new Exception("Lỗi khi thêm đơn hàng: " + ex.Message);
+                // Bắt các lỗi chung khác
+                throw new Exception("Lỗi khi thêm đơn hàng vào CSDL: " + ex.Message);
             }
         }
 
@@ -73,6 +108,7 @@ namespace WeDeLi1.service
                     DiaChiGiaoHang = pendingOrder.DiaChiGiaoHang,
                     ThoiGianGiaoHang = pendingOrder.ThoiGianGiaoHang,
                     KhoiLuong = pendingOrder.KhoiLuong,
+                    tenNguoiNhan = pendingOrder.tenNguoiNhan,
                     MaNhaXe = maNhaXe,
                     MaPhuongTien = maPhuongTien,
                     TongTien = totalCost,
@@ -90,7 +126,7 @@ namespace WeDeLi1.service
             }
         }
 
-        private string SelectPhuongTien(string maNhaXe, double khoiLuong)
+        public string SelectPhuongTien(string maNhaXe, double khoiLuong)
         {
             using (var context = new databases())
             {

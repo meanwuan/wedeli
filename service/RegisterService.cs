@@ -21,8 +21,20 @@ namespace WeDeLi1.Service
             string soDienThoai,
             DateTimeOffset? ngaySinh,
             string diaChi,
-            string vaiTro)
+            string vaiTro,
+            string captchaInput,
+            string currentCaptcha)
         {
+            // Kiểm tra CAPTCHA
+            if (captchaInput != currentCaptcha)
+            {
+                return new RegisterResult
+                {
+                    Success = false,
+                    Message = "CAPTCHA không chính xác. Vui lòng thử lại."
+                };
+            }
+
             // Validate required fields
             if (string.IsNullOrWhiteSpace(tenDangNhap) || string.IsNullOrWhiteSpace(matKhau))
             {
@@ -95,7 +107,7 @@ namespace WeDeLi1.Service
                     {
                         MaNguoiDung = Guid.NewGuid().ToString().Substring(0, 20),
                         TenDangNhap = tenDangNhap,
-                        MatKhau = matKhau, // TODO: Băm mật khẩu
+                        MatKhau = matKhau,
                         HoTen = hoTen,
                         NgaySinh = ngaySinh,
                         Email = email,
@@ -108,10 +120,9 @@ namespace WeDeLi1.Service
                 {
                     var nhaxe = new NhaXe()
                     {
-                        // Giả sử NhaXe có trường MaNhaXe tương tự
-                        MaNhaXe = Guid.NewGuid().ToString().Substring(0, 20), // Cần kiểm tra mô hình NhaXe
+                        MaNhaXe = Guid.NewGuid().ToString().Substring(0, 20),
                         TenDangNhap = tenDangNhap,
-                        MatKhau = matKhau, // TODO: Băm mật khẩu
+                        MatKhau = matKhau,
                         TenChu = hoTen,
                         Email = email,
                         SoDienThoai = soDienThoai,

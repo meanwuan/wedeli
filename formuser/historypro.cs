@@ -24,42 +24,42 @@ namespace WeDeLi1
             LoadLichSuDonHang();
         }
 
+        /// <summary>
+        /// Tải và hiển thị lịch sử đơn hàng của người dùng từ cơ sở dữ liệu.
+        /// Chỉ lấy những thông tin cơ bản và cần thiết.
+        /// </summary>
         private void LoadLichSuDonHang()
         {
             try
             {
-                // Lấy danh sách đơn hàng đã xác nhận từ database
-                var confirmedOrders = new List<DonHang>();
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                var danhSachDonHang = new List<DonHangViewModel>();
+                using (var conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+                    // Truy vấn để lấy các thông tin cần thiết từ bảng DonHang
                     string query = @"
-                        SELECT d.MaDonHang, d.LoaiDon, d.DiaChiLayHang, d.DiaChiGiaoHang, d.KhoiLuong, 
-                               d.MaNguoiDung, p.MaPhuongTien, n.MaNhaXe
-                        FROM DonHang d
-                        JOIN PhuongTien p ON d.MaPhuongTien = p.MaPhuongTien
-                        JOIN NhaXe n ON p.MaNhaXe = n.MaNhaXe
-                        WHERE d.MaNguoiDung = @MaNguoiDung";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                        SELECT MaDonHang, LoaiDon, KhoiLuong, DiaChiLayHang, DiaChiGiaoHang, 
+                               tenNguoiNhan, TongTien, TrangThai
+                        FROM DonHang
+                        WHERE MaNguoiDung = @MaNguoiDung";
+
+                    using (var cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@MaNguoiDung", sessionManager);
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        cmd.Parameters.AddWithValue("@MaNguoiDung", sessionManager ?? (object)DBNull.Value);
+                        using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                confirmedOrders.Add(new DonHang
+                                danhSachDonHang.Add(new DonHangViewModel
                                 {
                                     MaDonHang = reader["MaDonHang"].ToString(),
                                     LoaiDon = reader["LoaiDon"].ToString(),
+                                    KhoiLuong = reader["KhoiLuong"] != DBNull.Value ? Convert.ToDouble(reader["KhoiLuong"]) : (double?)null,
                                     DiaChiLayHang = reader["DiaChiLayHang"].ToString(),
                                     DiaChiGiaoHang = reader["DiaChiGiaoHang"].ToString(),
-                                    KhoiLuong = reader["KhoiLuong"] != DBNull.Value ? Convert.ToDouble(reader["KhoiLuong"]) : (double?)null,
-                                    MaNguoiDung = reader["MaNguoiDung"].ToString(),
-                                    MaPhuongTien = reader["MaPhuongTien"].ToString(),
-                                    //MaNhaXe = reader["MaNhaXe"].ToString(),
-                                    TrangThai = "XacNhan", // Giả định đơn hàng trong DonHang đều đã xác nhận
-                                    tenNguoiNhan = null,
-                                    //ThanhTien = null
+                                    tenNguoiNhan = reader["tenNguoiNhan"].ToString(),
+                                    TongTien = reader["TongTien"] != DBNull.Value ? Convert.ToDouble(reader["TongTien"]) : (double?)null,
+                                    TrangThai = reader["TrangThai"].ToString()
                                 });
                             }
                         }
@@ -67,30 +67,21 @@ namespace WeDeLi1
                 }
 
                 // Gán dữ liệu vào DataGridView
-                dataGridView1.DataSource = confirmedOrders;
+                dataGridView1.DataSource = danhSachDonHang;
+
+                // Tùy chỉnh tên cột để hiển thị thân thiện hơn
                 dataGridView1.Columns["MaDonHang"].HeaderText = "Mã Đơn Hàng";
                 dataGridView1.Columns["LoaiDon"].HeaderText = "Loại Đơn";
-                dataGridView1.Columns["KhoiLuong"].HeaderText = "Trọng Tải";
-                dataGridView1.Columns["DiaChiLayHang"].HeaderText = "Địa Chỉ Nhận";
+                dataGridView1.Columns["KhoiLuong"].HeaderText = "Khối Lượng";
+                dataGridView1.Columns["DiaChiLayHang"].HeaderText = "Địa Chỉ Lấy";
                 dataGridView1.Columns["DiaChiGiaoHang"].HeaderText = "Địa Chỉ Giao";
                 dataGridView1.Columns["tenNguoiNhan"].HeaderText = "Tên Người Nhận";
-                //dataGridView1.Columns["ThanhTien"].HeaderText = "Thành Tiền";
-                //dataGridView1.Columns["MaNhaXe"].HeaderText = "Nhà Xe";
+                dataGridView1.Columns["TongTien"].HeaderText = "Tổng Tiền";
                 dataGridView1.Columns["TrangThai"].HeaderText = "Trạng Thái";
-
-                // Ẩn các cột không cần thiết
-                dataGridView1.Columns["MaNguoiDung"].Visible = false;
-                dataGridView1.Columns["MaPhuongTien"].Visible = false;
-
-                //// Ẩn cột nếu không có dữ liệu
-                //if (dataGridView1.Columns.Contains("tenNguoiNhan") && confirmedOrders.All(o => o.tenNguoiNhan == null))
-                //    dataGridView1.Columns["tenNguoiNhan"].Visible = false;
-                //if (dataGridView1.Columns.Contains("ThanhTien") && confirmedOrders.All(o => o.ThanhTien == null))
-                //    dataGridView1.Columns["ThanhTien"].Visible = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi tải lịch sử đơn hàng đã xác nhận: " + ex.Message);
+                MessageBox.Show("Lỗi khi tải lịch sử đơn hàng: " + ex.Message);
             }
         }
 
@@ -98,5 +89,20 @@ namespace WeDeLi1
         {
             Close();
         }
+    }
+
+    /// <summary>
+    /// Lớp ViewModel để chứa dữ liệu đơn hàng sẽ hiển thị trên Grid.
+    /// </summary>
+    public class DonHangViewModel
+    {
+        public string MaDonHang { get; set; }
+        public string LoaiDon { get; set; }
+        public double? KhoiLuong { get; set; }
+        public string DiaChiLayHang { get; set; }
+        public string DiaChiGiaoHang { get; set; }
+        public string tenNguoiNhan { get; set; }
+        public double? TongTien { get; set; }
+        public string TrangThai { get; set; }
     }
 }

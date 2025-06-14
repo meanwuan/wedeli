@@ -31,6 +31,7 @@ namespace WeDeLi1
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(register));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,7 +46,7 @@ namespace WeDeLi1
             this.repass = new System.Windows.Forms.TextBox();
             this.sdt = new System.Windows.Forms.TextBox();
             this.Email = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBoxSotien = new System.Windows.Forms.TextBox();
             this.role = new System.Windows.Forms.ComboBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -57,7 +58,9 @@ namespace WeDeLi1
             this.label10 = new System.Windows.Forms.Label();
             this.address = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -74,7 +77,7 @@ namespace WeDeLi1
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(56, 96);
+            this.label2.Location = new System.Drawing.Point(58, 224);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(81, 13);
@@ -84,7 +87,7 @@ namespace WeDeLi1
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(56, 126);
+            this.label3.Location = new System.Drawing.Point(58, 254);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
@@ -94,7 +97,7 @@ namespace WeDeLi1
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(56, 157);
+            this.label4.Location = new System.Drawing.Point(58, 285);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 13);
@@ -104,7 +107,7 @@ namespace WeDeLi1
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(56, 195);
+            this.label5.Location = new System.Drawing.Point(58, 323);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 13);
@@ -114,7 +117,7 @@ namespace WeDeLi1
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(56, 348);
+            this.label6.Location = new System.Drawing.Point(57, 479);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(45, 13);
@@ -124,7 +127,7 @@ namespace WeDeLi1
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(56, 227);
+            this.label7.Location = new System.Drawing.Point(58, 355);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(32, 13);
@@ -134,7 +137,7 @@ namespace WeDeLi1
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(56, 313);
+            this.label8.Location = new System.Drawing.Point(58, 441);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(66, 13);
@@ -144,7 +147,7 @@ namespace WeDeLi1
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(56, 282);
+            this.label9.Location = new System.Drawing.Point(58, 410);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(54, 13);
@@ -153,7 +156,7 @@ namespace WeDeLi1
             // 
             // username
             // 
-            this.username.Location = new System.Drawing.Point(198, 91);
+            this.username.Location = new System.Drawing.Point(200, 219);
             this.username.Margin = new System.Windows.Forms.Padding(2);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(138, 20);
@@ -161,7 +164,7 @@ namespace WeDeLi1
             // 
             // pass
             // 
-            this.pass.Location = new System.Drawing.Point(198, 123);
+            this.pass.Location = new System.Drawing.Point(200, 251);
             this.pass.Margin = new System.Windows.Forms.Padding(2);
             this.pass.Name = "pass";
             this.pass.Size = new System.Drawing.Size(138, 20);
@@ -169,7 +172,7 @@ namespace WeDeLi1
             // 
             // repass
             // 
-            this.repass.Location = new System.Drawing.Point(198, 152);
+            this.repass.Location = new System.Drawing.Point(200, 280);
             this.repass.Margin = new System.Windows.Forms.Padding(2);
             this.repass.Name = "repass";
             this.repass.Size = new System.Drawing.Size(138, 20);
@@ -177,7 +180,7 @@ namespace WeDeLi1
             // 
             // sdt
             // 
-            this.sdt.Location = new System.Drawing.Point(198, 195);
+            this.sdt.Location = new System.Drawing.Point(200, 323);
             this.sdt.Margin = new System.Windows.Forms.Padding(2);
             this.sdt.Name = "sdt";
             this.sdt.Size = new System.Drawing.Size(138, 20);
@@ -185,24 +188,24 @@ namespace WeDeLi1
             // 
             // Email
             // 
-            this.Email.Location = new System.Drawing.Point(198, 222);
+            this.Email.Location = new System.Drawing.Point(200, 350);
             this.Email.Margin = new System.Windows.Forms.Padding(2);
             this.Email.Name = "Email";
             this.Email.Size = new System.Drawing.Size(138, 20);
             this.Email.TabIndex = 13;
             // 
-            // textBox8
+            // textBoxSotien
             // 
-            this.textBox8.Location = new System.Drawing.Point(198, 343);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(138, 20);
-            this.textBox8.TabIndex = 16;
+            this.textBoxSotien.Location = new System.Drawing.Point(199, 476);
+            this.textBoxSotien.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxSotien.Name = "textBoxSotien";
+            this.textBoxSotien.Size = new System.Drawing.Size(138, 20);
+            this.textBoxSotien.TabIndex = 16;
             // 
             // role
             // 
             this.role.FormattingEnabled = true;
-            this.role.Location = new System.Drawing.Point(198, 311);
+            this.role.Location = new System.Drawing.Point(200, 439);
             this.role.Margin = new System.Windows.Forms.Padding(2);
             this.role.Name = "role";
             this.role.Size = new System.Drawing.Size(138, 21);
@@ -210,7 +213,7 @@ namespace WeDeLi1
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(161, 282);
+            this.dateTimePicker1.Location = new System.Drawing.Point(163, 410);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(174, 20);
@@ -220,7 +223,7 @@ namespace WeDeLi1
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(198, 175);
+            this.checkBox1.Location = new System.Drawing.Point(200, 303);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(81, 14);
@@ -232,7 +235,7 @@ namespace WeDeLi1
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.button1.Location = new System.Drawing.Point(69, 428);
+            this.button1.Location = new System.Drawing.Point(70, 564);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(114, 44);
@@ -244,7 +247,7 @@ namespace WeDeLi1
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Lime;
-            this.button2.Location = new System.Drawing.Point(219, 428);
+            this.button2.Location = new System.Drawing.Point(220, 564);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(114, 44);
@@ -256,7 +259,7 @@ namespace WeDeLi1
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.Cyan;
-            this.button3.Location = new System.Drawing.Point(309, 488);
+            this.button3.Location = new System.Drawing.Point(310, 624);
             this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(92, 44);
@@ -268,7 +271,7 @@ namespace WeDeLi1
             // jblkbhb
             // 
             this.jblkbhb.AutoSize = true;
-            this.jblkbhb.Location = new System.Drawing.Point(56, 64);
+            this.jblkbhb.Location = new System.Drawing.Point(58, 192);
             this.jblkbhb.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.jblkbhb.Name = "jblkbhb";
             this.jblkbhb.Size = new System.Drawing.Size(54, 13);
@@ -277,7 +280,7 @@ namespace WeDeLi1
             // 
             // name
             // 
-            this.name.Location = new System.Drawing.Point(198, 61);
+            this.name.Location = new System.Drawing.Point(200, 189);
             this.name.Margin = new System.Windows.Forms.Padding(2);
             this.name.Name = "name";
             this.name.Size = new System.Drawing.Size(138, 20);
@@ -286,7 +289,7 @@ namespace WeDeLi1
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(56, 257);
+            this.label10.Location = new System.Drawing.Point(58, 385);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(40, 13);
@@ -295,7 +298,7 @@ namespace WeDeLi1
             // 
             // address
             // 
-            this.address.Location = new System.Drawing.Point(198, 252);
+            this.address.Location = new System.Drawing.Point(200, 380);
             this.address.Margin = new System.Windows.Forms.Padding(2);
             this.address.Name = "address";
             this.address.Size = new System.Drawing.Size(138, 20);
@@ -303,17 +306,29 @@ namespace WeDeLi1
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(219, 368);
+            this.pictureBox1.Location = new System.Drawing.Point(220, 504);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(136, 54);
             this.pictureBox1.TabIndex = 27;
             this.pictureBox1.TabStop = false;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.ErrorImage = null;
+            this.pictureBox2.InitialImage = null;
+            this.pictureBox2.Location = new System.Drawing.Point(108, 48);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(148, 136);
+            this.pictureBox2.TabIndex = 28;
+            this.pictureBox2.TabStop = false;
+            // 
             // register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(412, 543);
+            this.ClientSize = new System.Drawing.Size(412, 679);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.address);
             this.Controls.Add(this.label10);
@@ -325,7 +340,7 @@ namespace WeDeLi1
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.role);
-            this.Controls.Add(this.textBox8);
+            this.Controls.Add(this.textBoxSotien);
             this.Controls.Add(this.Email);
             this.Controls.Add(this.sdt);
             this.Controls.Add(this.repass);
@@ -345,6 +360,7 @@ namespace WeDeLi1
             this.Text = "register";
             this.Load += new System.EventHandler(this.register_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,7 +382,7 @@ namespace WeDeLi1
         private System.Windows.Forms.TextBox repass;
         private System.Windows.Forms.TextBox sdt;
         private System.Windows.Forms.TextBox Email;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBoxSotien;
         private System.Windows.Forms.ComboBox role;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.CheckBox checkBox1;
@@ -378,5 +394,6 @@ namespace WeDeLi1
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox address;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private PictureBox pictureBox2;
     }
 }

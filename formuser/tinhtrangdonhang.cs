@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeDeLi1.Dbase;
 using WeDeLi1.service;
+using WeDeLi1.style;
 
 namespace WeDeLi1
 {
@@ -28,6 +29,9 @@ namespace WeDeLi1
 
         private void LoadOrderStatus()
         {
+            borderbutton.bogocbovien(changepr, 12);
+            borderbutton.bogocbovien(cancelpro, 12);
+            borderbutton.bogocbovien(followpro, 12); // Assuming label2 is a Label control for displaying order status
             try
             {
                 var orderStatus = orderStatusService.GetOrderStatus(maDonHang);
@@ -75,6 +79,11 @@ namespace WeDeLi1
             {
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void tinhtrangdonhang_Load(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

@@ -102,31 +102,40 @@ namespace WeDeLi1
             {
                 if (!ValidateInput()) return;
 
-                XacNhanDonhang pendingOrder = new XacNhanDonhang
+                string maNhaXe = (string)nhaxe.SelectedValue;
+                double khoiLuongDonHang = double.Parse(trongtai.Text);
+                double totalCost = CalculateTotalCost(khoiLuongDonHang);
+                string paymentMethod = phuongthucthanhtoan.SelectedItem.ToString();
+
+                // === THAY ĐỔI LOGIC TẠI ĐÂY ===
+                // Thay vì gọi themdonhang, chúng ta sẽ gọi AddPendingOrder
+
+                // Bước 1: Tạo một đối tượng chứa thông tin đơn hàng để gửi đi
+                // Dựa trên lớp cơ sở XacNhanDonhang mà phương thức AddPendingOrder yêu cầu
+                var orderDataForQueue = new XacNhanDonhang // XacNhanDonhang là lớp được định nghĩa trong project của bạn
                 {
+                    MaDonHangTam = GenerateTempOrderId(), // Tạo mã đơn hàng tạm thời
                     LoaiDon = loaidon.Text.Trim(),
-                    KhoiLuong = double.Parse(trongtai.Text),
+                    KhoiLuong = khoiLuongDonHang,
                     tenNguoiNhan = tennguoinhan.Text.Trim(),
                     DiaChiLayHang = diachinhanhang.Text.Trim(),
                     DiaChiGiaoHang = diachigiaohang.Text.Trim(),
-                    MaDonHangTam = GenerateTempOrderId()
+                    ThoiGianLayHang = DateTime.Now, // Gán thời gian tạo yêu cầu
+                    ThoiGianGiaoHang = null // Sẽ được nhà xe cập nhật sau
                 };
 
-                double totalCost = CalculateTotalCost(pendingOrder.KhoiLuong.Value);
+                // Bước 2: Gọi AddPendingOrder để đưa đơn hàng vào hàng đợi chờ xác nhận
+                // Phương thức này sẽ lưu đơn hàng vào file "don_hang_tam_log.json"
+                addOrderService.AddPendingOrder(orderDataForQueue, maNhaXe, totalCost, paymentMethod);
 
-                // Save to pending orders
-                addOrderService.AddPendingOrder(pendingOrder, (string)nhaxe.SelectedValue, totalCost, phuongthucthanhtoan.SelectedItem.ToString());
+                // Bước 3: Thông báo cho người dùng rằng đơn hàng của họ đang chờ được xử lý
+                MessageBox.Show("Đã gửi yêu cầu đơn hàng thành công!\nĐơn hàng của bạn đang chờ nhà xe xác nhận.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                MessageBox.Show("Đơn hàng đã được tạo và đang chờ xác nhận từ nhà xe.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Open tinhtrangdonhang form with MaDonHangTam
-                var tinhtrangForm = new tinhtrangdonhang(pendingOrder.MaDonHangTam);
-                tinhtrangForm.ShowDialog();
-                this.Close();
+                this.Close(); // Đóng form sau khi gửi yêu cầu thành công
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tạo đơn hàng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi gửi yêu cầu đơn hàng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

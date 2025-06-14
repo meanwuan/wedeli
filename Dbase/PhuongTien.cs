@@ -28,7 +28,7 @@ namespace WeDeLi1.Dbase
         public string LoaiHang { get; set; }
 
         public string GiayPhepLaiXe { get; set; }
-
+        public string TrangThai { get; set; }
         public int TaiTrong { get; set; }
 
         [StringLength(20)]

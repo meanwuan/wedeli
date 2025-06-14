@@ -9,5 +9,6 @@ namespace WeDeLi1.Dbase
     public static class sessionmanager
     {
         public static string curentUser { get; set; }
+        public static string currentTransport { get; set; }
     }
 }

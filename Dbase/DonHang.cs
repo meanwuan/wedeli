@@ -22,9 +22,10 @@ namespace WeDeLi1.Dbase
 
         [StringLength(50)]
         public string LoaiDon { get; set; }
-
+        [StringLength(1000)]
         public string DiaChiLayHang { get; set; }
 
+        //[StringLength(1000)]
         public DateTime? ThoiGianLayHang { get; set; }
 
         public string DiaChiGiaoHang { get; set; }
@@ -49,7 +50,9 @@ namespace WeDeLi1.Dbase
 
         public virtual NguoiDung NguoiDung { get; set; }
 
+        public string tenNguoiNhan { get; set; }
         public virtual PhuongTien PhuongTien { get; set; }
+        public string TrangThai { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GiaoHang> GiaoHangs { get; set; }
@@ -57,7 +60,7 @@ namespace WeDeLi1.Dbase
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ThanhToanDonHang> ThanhToanDonHangs { get; set; }
 
-        public string TrangThai { get; set; }
-        public string tenNguoiNhan { get; set; }
+        
+       
     }
 }

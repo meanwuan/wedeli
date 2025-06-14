@@ -42,16 +42,19 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.reloandcap = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.logo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 25.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(149, 90);
+            this.label1.Location = new System.Drawing.Point(118, 9);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(238, 48);
+            this.label1.Size = new System.Drawing.Size(199, 39);
             this.label1.TabIndex = 0;
             this.label1.Text = "Đăng Nhập";
             // 
@@ -59,9 +62,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(68, 183);
+            this.label2.Location = new System.Drawing.Point(53, 215);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(138, 22);
+            this.label2.Size = new System.Drawing.Size(111, 18);
             this.label2.TabIndex = 1;
             this.label2.Text = "Tên Đăng Nhập";
             // 
@@ -69,9 +73,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(68, 232);
+            this.label3.Location = new System.Drawing.Point(53, 250);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 20);
+            this.label3.Size = new System.Drawing.Size(68, 17);
             this.label3.TabIndex = 2;
             this.label3.Text = "Mật Khẩu";
             // 
@@ -79,9 +84,10 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(68, 310);
+            this.label4.Location = new System.Drawing.Point(53, 297);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(66, 20);
+            this.label4.Size = new System.Drawing.Size(56, 17);
             this.label4.TabIndex = 3;
             this.label4.Text = "Capcha";
             // 
@@ -89,9 +95,10 @@
             // 
             this.clear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.clear.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clear.Location = new System.Drawing.Point(99, 471);
+            this.clear.Location = new System.Drawing.Point(86, 385);
+            this.clear.Margin = new System.Windows.Forms.Padding(2);
             this.clear.Name = "clear";
-            this.clear.Size = new System.Drawing.Size(123, 65);
+            this.clear.Size = new System.Drawing.Size(92, 53);
             this.clear.TabIndex = 4;
             this.clear.Text = "Xoá";
             this.clear.UseVisualStyleBackColor = false;
@@ -101,9 +108,10 @@
             // 
             this.conf.BackColor = System.Drawing.Color.SpringGreen;
             this.conf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.conf.Location = new System.Drawing.Point(274, 471);
+            this.conf.Location = new System.Drawing.Point(232, 385);
+            this.conf.Margin = new System.Windows.Forms.Padding(2);
             this.conf.Name = "conf";
-            this.conf.Size = new System.Drawing.Size(113, 65);
+            this.conf.Size = new System.Drawing.Size(85, 53);
             this.conf.TabIndex = 5;
             this.conf.Text = "Xác Nhận";
             this.conf.UseVisualStyleBackColor = false;
@@ -112,9 +120,10 @@
             // register
             // 
             this.register.BackColor = System.Drawing.Color.Aqua;
-            this.register.Location = new System.Drawing.Point(403, 542);
+            this.register.Location = new System.Drawing.Point(346, 9);
+            this.register.Margin = new System.Windows.Forms.Padding(2);
             this.register.Name = "register";
-            this.register.Size = new System.Drawing.Size(98, 57);
+            this.register.Size = new System.Drawing.Size(74, 22);
             this.register.TabIndex = 6;
             this.register.Text = "Đăng Ký";
             this.register.UseVisualStyleBackColor = false;
@@ -122,31 +131,35 @@
             // 
             // username
             // 
-            this.username.Location = new System.Drawing.Point(278, 185);
+            this.username.Location = new System.Drawing.Point(210, 216);
+            this.username.Margin = new System.Windows.Forms.Padding(2);
             this.username.Name = "username";
-            this.username.Size = new System.Drawing.Size(191, 22);
+            this.username.Size = new System.Drawing.Size(144, 20);
             this.username.TabIndex = 7;
             // 
             // pass
             // 
-            this.pass.Location = new System.Drawing.Point(278, 230);
+            this.pass.Location = new System.Drawing.Point(210, 249);
+            this.pass.Margin = new System.Windows.Forms.Padding(2);
             this.pass.Name = "pass";
-            this.pass.Size = new System.Drawing.Size(191, 22);
+            this.pass.Size = new System.Drawing.Size(144, 20);
             this.pass.TabIndex = 8;
             // 
             // capcha
             // 
-            this.capcha.Location = new System.Drawing.Point(257, 310);
+            this.capcha.Location = new System.Drawing.Point(210, 297);
+            this.capcha.Margin = new System.Windows.Forms.Padding(2);
             this.capcha.Name = "capcha";
-            this.capcha.Size = new System.Drawing.Size(171, 22);
+            this.capcha.Size = new System.Drawing.Size(144, 20);
             this.capcha.TabIndex = 9;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(278, 269);
+            this.checkBox1.Location = new System.Drawing.Point(210, 273);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(127, 20);
+            this.checkBox1.Size = new System.Drawing.Size(107, 17);
             this.checkBox1.TabIndex = 10;
             this.checkBox1.Text = "hiển thị mật khẩu";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -154,27 +167,41 @@
             // 
             // reloandcap
             // 
-            this.reloandcap.Location = new System.Drawing.Point(353, 418);
+            this.reloandcap.Location = new System.Drawing.Point(358, 344);
+            this.reloandcap.Margin = new System.Windows.Forms.Padding(2);
             this.reloandcap.Name = "reloandcap";
-            this.reloandcap.Size = new System.Drawing.Size(75, 34);
+            this.reloandcap.Size = new System.Drawing.Size(56, 28);
             this.reloandcap.TabIndex = 11;
             this.reloandcap.Text = "tải lại capcha";
             this.reloandcap.UseVisualStyleBackColor = true;
-            this.reloandcap.Click += new System.EventHandler(this.reloandcap_Click);
+            this.reloandcap.Click += new System.EventHandler(this.reloadCaptcha_Click);
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(257, 353);
+            this.pictureBox1.Location = new System.Drawing.Point(210, 333);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(176, 59);
+            this.pictureBox1.Size = new System.Drawing.Size(144, 48);
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             // 
+            // logo
+            // 
+            this.logo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logo.BackgroundImage")));
+            this.logo.ErrorImage = null;
+            this.logo.InitialImage = null;
+            this.logo.Location = new System.Drawing.Point(136, 51);
+            this.logo.Name = "logo";
+            this.logo.Size = new System.Drawing.Size(148, 136);
+            this.logo.TabIndex = 13;
+            this.logo.TabStop = false;
+            // 
             // login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(525, 605);
+            this.ClientSize = new System.Drawing.Size(431, 439);
+            this.Controls.Add(this.logo);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.reloandcap);
             this.Controls.Add(this.checkBox1);
@@ -189,9 +216,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "login";
             this.Text = "WeDeLi";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,5 +241,6 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button reloandcap;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox logo;
     }
 }

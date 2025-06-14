@@ -63,6 +63,7 @@
             this.signout.TabIndex = 5;
             this.signout.Text = "Đăng Xuất";
             this.signout.UseVisualStyleBackColor = false;
+            this.signout.Click += new System.EventHandler(this.signout_Click);
             // 
             // add_goods
             // 
